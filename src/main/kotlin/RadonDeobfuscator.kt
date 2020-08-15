@@ -1,3 +1,9 @@
 package com.github.gitantoinee.deobfuscator.radon
 
-public class RadonDeobfuscator
+import java.io.InputStream
+import java.io.OutputStream
+
+public class RadonDeobfuscator {
+    public fun deobfuscate(inputStream: InputStream, outputStream: OutputStream) {
+    }
+}
