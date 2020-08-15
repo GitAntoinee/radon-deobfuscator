@@ -12,7 +12,7 @@ public class RadonInvokeDynamicMethodVisitor(inner: MethodVisitor? = null) : Met
         vararg bootstrapMethodArguments: Any,
     ) {
         println("INDY ($bootstrapMethodHandle) : `$name` `$descriptor` - arguments (${bootstrapMethodArguments.size}) : " +
-                bootstrapMethodArguments.joinToString(" ", "`", "`"))
+                bootstrapMethodArguments.joinToString(" ") { "`$it`" })
 
         super.visitInvokeDynamicInsn(name, descriptor, bootstrapMethodHandle, *bootstrapMethodArguments)
     }
