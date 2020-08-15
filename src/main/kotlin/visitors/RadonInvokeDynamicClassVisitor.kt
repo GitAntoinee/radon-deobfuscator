@@ -10,7 +10,7 @@ public class RadonInvokeDynamicClassVisitor(inner: ClassVisitor? = null) : Class
         name: String,
         descriptor: String,
         signature: String?,
-        exceptions: Array<out String>
+        exceptions: Array<out String>?,
     ): MethodVisitor {
         val inner = super.visitMethod(access, name, descriptor, signature, exceptions)
 
