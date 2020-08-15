@@ -9,6 +9,19 @@ public class RadonSyntheticBridgeRemoverClassVisitor(inner: ClassVisitor? = null
         const val ADDED_ACCESS: Int = (Opcodes.ACC_SYNTHETIC or Opcodes.ACC_BRIDGE).inv()
     }
 
+    override fun visit(
+        version: Int,
+        access: Int,
+        name: String?,
+        signature: String?,
+        superName: String?,
+        interfaces: Array<out String>?
+    ) {
+        val newAccess = access and ADDED_ACCESS
+
+        super.visit(version, newAccess, name, signature, superName, interfaces)
+    }
+
     override fun visitMethod(
         access: Int,
         name: String,
