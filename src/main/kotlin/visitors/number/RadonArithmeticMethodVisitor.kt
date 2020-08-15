@@ -60,7 +60,7 @@ public class RadonArithmeticMethodVisitor(inner: MethodVisitor? = null) : Method
     override fun visitLdcInsn(value: Any) {
         when (value) {
             is Number -> operand = value
-            is String, is Type, is Handle, is ConstantDynamic -> sum = 0
+            is String, is Type, is Handle, is ConstantDynamic -> sum = null
             else -> error("Load constant operand is invalid")
         }
 
