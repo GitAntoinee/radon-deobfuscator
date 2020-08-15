@@ -29,9 +29,11 @@ public class RadonArithmeticMethodVisitor(inner: MethodVisitor? = null) : Method
             Opcodes.IREM -> sumOrZero %= operand.toInt()
 
             else -> {
-                sum = null
+                when (sum) {
+                    null -> super.visitInsn(opcode)
+                }
 
-                super.visitInsn(opcode)
+                sum = null
             }
         }
     }
