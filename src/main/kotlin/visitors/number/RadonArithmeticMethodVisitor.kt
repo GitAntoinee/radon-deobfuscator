@@ -1,4 +1,4 @@
-package com.github.gitantoinee.deobfuscator.radon.visitors
+package com.github.gitantoinee.deobfuscator.radon.visitors.number
 
 import org.objectweb.asm.*
 

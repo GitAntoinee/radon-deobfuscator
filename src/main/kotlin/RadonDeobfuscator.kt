@@ -1,8 +1,8 @@
 package com.github.gitantoinee.deobfuscator.radon
 
-import com.github.gitantoinee.deobfuscator.radon.visitors.RadonArithmeticClassVisitor
+import com.github.gitantoinee.deobfuscator.radon.visitors.number.RadonArithmeticClassVisitor
 import com.github.gitantoinee.deobfuscator.radon.visitors.RadonIllegalAnnotationClassVisitor
-import com.github.gitantoinee.deobfuscator.radon.visitors.RadonInvokeDynamicClassVisitor
+import com.github.gitantoinee.deobfuscator.radon.visitors.references.RadonInvokeDynamicClassVisitor
 import com.github.gitantoinee.deobfuscator.radon.visitors.RadonSyntheticBridgeRemoverClassVisitor
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.ClassWriter

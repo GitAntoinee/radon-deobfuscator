@@ -1,4 +1,4 @@
-package com.github.gitantoinee.deobfuscator.radon.visitors
+package com.github.gitantoinee.deobfuscator.radon.visitors.references
 
 import org.objectweb.asm.Handle
 import org.objectweb.asm.MethodVisitor
