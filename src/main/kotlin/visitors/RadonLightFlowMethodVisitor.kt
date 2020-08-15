@@ -18,6 +18,10 @@ public class RadonLightFlowMethodVisitor(inner: MethodVisitor? = null) : MethodV
             Opcodes.ICONST_5 -> operand = 5
 
             Opcodes.IADD -> sum += operand.toInt()
+            Opcodes.ISUB -> sum -= operand.toInt()
+            Opcodes.IMUL -> sum *= operand.toInt()
+            Opcodes.IDIV -> sum /= operand.toInt()
+            Opcodes.IREM -> sum %= operand.toInt()
 
             else -> {
                 sum = 0
