@@ -4,7 +4,7 @@ import org.objectweb.asm.ClassVisitor
 import org.objectweb.asm.MethodVisitor
 import org.objectweb.asm.Opcodes
 
-public class RadonFlowClassVisitor(inner: ClassVisitor? = null) : ClassVisitor(Opcodes.ASM9, inner) {
+public class RadonLightFlowClassVisitor(inner: ClassVisitor? = null) : ClassVisitor(Opcodes.ASM9, inner) {
     override fun visitMethod(
         access: Int,
         name: String?,
@@ -14,6 +14,6 @@ public class RadonFlowClassVisitor(inner: ClassVisitor? = null) : ClassVisitor(O
     ): MethodVisitor {
         val inner = super.visitMethod(access, name, descriptor, signature, exceptions)
 
-        return RadonFlowMethodVisitor(inner)
+        return RadonLightFlowMethodVisitor(inner)
     }
 }
