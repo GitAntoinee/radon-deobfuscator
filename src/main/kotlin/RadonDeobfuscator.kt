@@ -3,7 +3,7 @@ package com.github.gitantoinee.deobfuscator.radon
 import com.github.gitantoinee.deobfuscator.radon.visitors.number.RadonArithmeticClassVisitor
 import com.github.gitantoinee.deobfuscator.radon.visitors.RadonIllegalAnnotationClassVisitor
 import com.github.gitantoinee.deobfuscator.radon.visitors.references.RadonInvokeDynamicClassVisitor
-import com.github.gitantoinee.deobfuscator.radon.visitors.RadonSyntheticBridgeRemoverClassVisitor
+import com.github.gitantoinee.deobfuscator.radon.visitors.RadonHideCodeClassVisitor
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.ClassWriter
 import java.io.InputStream
@@ -15,7 +15,7 @@ public class RadonDeobfuscator {
         val writer = ClassWriter(reader, 0).also {
             reader.accept(
                 RadonArithmeticClassVisitor(
-                    RadonSyntheticBridgeRemoverClassVisitor(
+                    RadonHideCodeClassVisitor(
                         RadonIllegalAnnotationClassVisitor(
                             RadonInvokeDynamicClassVisitor(it)))),
                 0)

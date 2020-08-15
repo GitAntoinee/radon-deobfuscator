@@ -5,7 +5,7 @@ import org.objectweb.asm.FieldVisitor
 import org.objectweb.asm.MethodVisitor
 import org.objectweb.asm.Opcodes
 
-public class RadonSyntheticBridgeRemoverClassVisitor(inner: ClassVisitor? = null) : ClassVisitor(Opcodes.ASM9, inner) {
+public class RadonHideCodeClassVisitor(inner: ClassVisitor? = null) : ClassVisitor(Opcodes.ASM9, inner) {
     private companion object {
         const val MODIFIED_ACCESS: Int = (Opcodes.ACC_SYNTHETIC or Opcodes.ACC_BRIDGE).inv()
     }
