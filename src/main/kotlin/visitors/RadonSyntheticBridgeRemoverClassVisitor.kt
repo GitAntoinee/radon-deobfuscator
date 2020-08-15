@@ -1,6 +1,7 @@
 package com.github.gitantoinee.deobfuscator.radon.visitors
 
 import org.objectweb.asm.ClassVisitor
+import org.objectweb.asm.FieldVisitor
 import org.objectweb.asm.MethodVisitor
 import org.objectweb.asm.Opcodes
 
@@ -20,6 +21,18 @@ public class RadonSyntheticBridgeRemoverClassVisitor(inner: ClassVisitor? = null
         val newAccess = access and ADDED_ACCESS
 
         super.visit(version, newAccess, name, signature, superName, interfaces)
+    }
+
+    override fun visitField(
+        access: Int,
+        name: String?,
+        descriptor: String?,
+        signature: String?,
+        value: Any?
+    ): FieldVisitor {
+        val newAccess = access and ADDED_ACCESS
+
+        return super.visitField(newAccess, name, descriptor, signature, value)
     }
 
     override fun visitMethod(
