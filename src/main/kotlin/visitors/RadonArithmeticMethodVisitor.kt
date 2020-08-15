@@ -38,7 +38,8 @@ public class RadonArithmeticMethodVisitor(inner: MethodVisitor? = null) : Method
     override fun visitLdcInsn(value: Any) {
         when (value) {
             is Number -> operand = value
-            else -> error("Load constant operand is not a number")
+            is String -> sum = 0
+            else -> error("Load constant operand is not a number or a string")
         }
     }
 }
