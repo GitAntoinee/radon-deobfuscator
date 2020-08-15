@@ -42,7 +42,8 @@ public class RadonArithmeticMethodVisitor(inner: MethodVisitor? = null) : Method
                         sum == null -> super.visitInsn(opcode)
 
                         sum!! >= Byte.MIN_VALUE && sum!! <= Byte.MAX_VALUE -> super.visitIntInsn(Opcodes.BIPUSH, sum!!)
-                        sum!! >= Short.MIN_VALUE && sum!! <= Short.MAX_VALUE -> super.visitIntInsn(Opcodes.SIPUSH, sum!!)
+                        sum!! >= Short.MIN_VALUE && sum!! <= Short.MAX_VALUE -> super.visitIntInsn(Opcodes.SIPUSH,
+                            sum!!)
                         else -> super.visitLdcInsn(sum!!)
                     }
                 }
@@ -62,6 +63,8 @@ public class RadonArithmeticMethodVisitor(inner: MethodVisitor? = null) : Method
             is String, is Type, is Handle, is ConstantDynamic -> sum = 0
             else -> error("Load constant operand is invalid")
         }
+
+        super.visitLdcInsn(value)
     }
 }
 
