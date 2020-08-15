@@ -6,6 +6,9 @@ import org.objectweb.asm.Opcodes
 
 public class RadonInvokeDynamicMethodVisitor(inner: MethodVisitor? = null) : MethodVisitor(Opcodes.ASM9, inner) {
     private companion object {
+        /**
+         * Depend on the obfuscation, if it use fast invoke dynamic or normal invoke dynamic
+         */
         const val FAST: Boolean = true
     }
 
