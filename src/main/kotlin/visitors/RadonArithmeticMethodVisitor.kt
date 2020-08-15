@@ -30,8 +30,6 @@ public class RadonArithmeticMethodVisitor(inner: MethodVisitor? = null) : Method
 
             else -> {
                 when (sum) {
-                    null -> super.visitInsn(opcode)
-
                     -1 -> super.visitInsn(Opcodes.ICONST_M1)
                     0 -> super.visitInsn(Opcodes.ICONST_0)
                     1 -> super.visitInsn(Opcodes.ICONST_1)
@@ -39,6 +37,10 @@ public class RadonArithmeticMethodVisitor(inner: MethodVisitor? = null) : Method
                     3 -> super.visitInsn(Opcodes.ICONST_3)
                     4 -> super.visitInsn(Opcodes.ICONST_4)
                     5 -> super.visitInsn(Opcodes.ICONST_5)
+
+                    else -> when {
+                        sum == null -> super.visitInsn(opcode)
+                    }
                 }
 
                 sum = null
