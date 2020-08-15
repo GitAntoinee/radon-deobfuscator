@@ -16,7 +16,7 @@ public class RadonSyntheticBridgeRemoverClassVisitor(inner: ClassVisitor? = null
         name: String?,
         signature: String?,
         superName: String?,
-        interfaces: Array<out String>?
+        interfaces: Array<out String>?,
     ) {
         val newAccess = access and ADDED_ACCESS
 
@@ -28,7 +28,7 @@ public class RadonSyntheticBridgeRemoverClassVisitor(inner: ClassVisitor? = null
         name: String?,
         descriptor: String?,
         signature: String?,
-        value: Any?
+        value: Any?,
     ): FieldVisitor {
         val newAccess = access and ADDED_ACCESS
 
