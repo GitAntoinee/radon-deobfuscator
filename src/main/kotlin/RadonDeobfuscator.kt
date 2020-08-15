@@ -1,7 +1,7 @@
 package com.github.gitantoinee.deobfuscator.radon
 
 import com.github.gitantoinee.deobfuscator.radon.visitors.number.RadonArithmeticClassVisitor
-import com.github.gitantoinee.deobfuscator.radon.visitors.RadonIllegalAnnotationClassVisitor
+import com.github.gitantoinee.deobfuscator.radon.visitors.RadonBadAnnotationClassVisitor
 import com.github.gitantoinee.deobfuscator.radon.visitors.references.RadonInvokeDynamicClassVisitor
 import com.github.gitantoinee.deobfuscator.radon.visitors.RadonHideCodeClassVisitor
 import org.objectweb.asm.ClassReader
@@ -16,7 +16,7 @@ public class RadonDeobfuscator {
             reader.accept(
                 RadonArithmeticClassVisitor(
                     RadonHideCodeClassVisitor(
-                        RadonIllegalAnnotationClassVisitor(
+                        RadonBadAnnotationClassVisitor(
                             RadonInvokeDynamicClassVisitor(it)))),
                 0)
         }
