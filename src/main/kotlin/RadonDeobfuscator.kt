@@ -1,5 +1,6 @@
 package com.github.gitantoinee.deobfuscator.radon
 
+import com.github.gitantoinee.deobfuscator.radon.visitors.RadonArithmeticClassVisitor
 import com.github.gitantoinee.deobfuscator.radon.visitors.RadonIllegalAnnotationClassVisitor
 import com.github.gitantoinee.deobfuscator.radon.visitors.RadonInvokeDynamicClassVisitor
 import com.github.gitantoinee.deobfuscator.radon.visitors.RadonSyntheticBridgeRemoverClassVisitor
@@ -13,9 +14,10 @@ public class RadonDeobfuscator {
         val reader = ClassReader(inputStream.readBytes())
         val writer = ClassWriter(reader, 0).also {
             reader.accept(
-                RadonSyntheticBridgeRemoverClassVisitor(
-                    RadonIllegalAnnotationClassVisitor(
-                        RadonInvokeDynamicClassVisitor(it))),
+                RadonArithmeticClassVisitor(
+                    RadonSyntheticBridgeRemoverClassVisitor(
+                        RadonIllegalAnnotationClassVisitor(
+                            RadonInvokeDynamicClassVisitor(it)))),
                 0)
         }
         outputStream.write(writer.toByteArray())
