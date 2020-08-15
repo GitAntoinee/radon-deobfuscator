@@ -18,6 +18,13 @@ public class RadonInvokeDynamicMethodVisitor(inner: MethodVisitor? = null) : Met
         bootstrapMethodHandle: Handle,
         vararg bootstrapMethodArguments: Any,
     ) {
-        super.visitInvokeDynamicInsn(name, descriptor, bootstrapMethodHandle, *bootstrapMethodArguments)
+        val isObfuscated = bootstrapMethodArguments.first() is Int
+                && bootstrapMethodArguments.drop(1).all { it is String }
+
+        if (isObfuscated) {
+            // Deobfuscation will be here
+        } else {
+            super.visitInvokeDynamicInsn(name, descriptor, bootstrapMethodHandle, *bootstrapMethodArguments)
+        }
     }
 }
