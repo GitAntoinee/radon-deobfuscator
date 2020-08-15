@@ -3,8 +3,14 @@ package com.github.gitantoinee.deobfuscator.radon.visitors
 import org.objectweb.asm.*
 
 public class RadonArithmeticMethodVisitor(inner: MethodVisitor? = null) : MethodVisitor(Opcodes.ASM9, inner) {
-    private var sum: Int = 0
+    private var sum: Int? = null
     private var operand: Number = 0
+
+    private inline var sumOrZero: Int
+        get() = sum ?: 0
+        set(value) {
+            sum = value
+        }
 
     override fun visitInsn(opcode: Int) {
         when (opcode) {
@@ -16,14 +22,14 @@ public class RadonArithmeticMethodVisitor(inner: MethodVisitor? = null) : Method
             Opcodes.ICONST_4 -> operand = 4
             Opcodes.ICONST_5 -> operand = 5
 
-            Opcodes.IADD -> sum += operand.toInt()
-            Opcodes.ISUB -> sum -= operand.toInt()
-            Opcodes.IMUL -> sum *= operand.toInt()
-            Opcodes.IDIV -> sum /= operand.toInt()
-            Opcodes.IREM -> sum %= operand.toInt()
+            Opcodes.IADD -> sumOrZero += operand.toInt()
+            Opcodes.ISUB -> sumOrZero -= operand.toInt()
+            Opcodes.IMUL -> sumOrZero *= operand.toInt()
+            Opcodes.IDIV -> sumOrZero /= operand.toInt()
+            Opcodes.IREM -> sumOrZero %= operand.toInt()
 
             else -> {
-                sum = 0
+                sum = null
 
                 super.visitInsn(opcode)
             }
