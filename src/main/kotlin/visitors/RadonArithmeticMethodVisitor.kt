@@ -67,4 +67,3 @@ public class RadonArithmeticMethodVisitor(inner: MethodVisitor? = null) : Method
         super.visitLdcInsn(value)
     }
 }
-
