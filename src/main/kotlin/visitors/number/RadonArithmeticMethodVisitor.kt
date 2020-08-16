@@ -4,10 +4,10 @@ import org.objectweb.asm.*
 
 public class RadonArithmeticMethodVisitor(inner: MethodVisitor? = null) : MethodVisitor(Opcodes.ASM9, inner) {
     private var sum: Int? = null
-    private var operand: Number = 0
+    private var operand: Int = 0
 
     private inline var sumOrZero: Int
-        get() = sum ?: 0
+        get() = sum ?: 0.also { print("0") }
         set(value) {
             sum = value
         }
@@ -22,11 +22,11 @@ public class RadonArithmeticMethodVisitor(inner: MethodVisitor? = null) : Method
             Opcodes.ICONST_4 -> operand = 4
             Opcodes.ICONST_5 -> operand = 5
 
-            Opcodes.IADD -> sumOrZero += operand.toInt()
-            Opcodes.ISUB -> sumOrZero -= operand.toInt()
-            Opcodes.IMUL -> sumOrZero *= operand.toInt()
-            Opcodes.IDIV -> sumOrZero /= operand.toInt()
-            Opcodes.IREM -> sumOrZero %= operand.toInt()
+            Opcodes.IADD -> sumOrZero += operand
+            Opcodes.ISUB -> sumOrZero -= operand
+            Opcodes.IMUL -> sumOrZero *= operand
+            Opcodes.IDIV -> sumOrZero /= operand
+            Opcodes.IREM -> sumOrZero %= operand
 
             else -> {
                 when (sum) {
@@ -61,7 +61,7 @@ public class RadonArithmeticMethodVisitor(inner: MethodVisitor? = null) : Method
 
     override fun visitLdcInsn(value: Any) {
         when (value) {
-            is Number -> operand = value
+            is Number -> operand = value.toInt()
             is String, is Type, is Handle, is ConstantDynamic -> {
                 sum = null
                 super.visitLdcInsn(value)
