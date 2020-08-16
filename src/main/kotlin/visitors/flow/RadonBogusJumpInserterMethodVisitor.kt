@@ -68,6 +68,8 @@ public class RadonBogusJumpInserterMethodVisitor(
 
     override fun visitJumpInsn(opcode: Int, label: Label) {
         if (State.REMOVING == state && Opcodes.IFNE == opcode) {
+            check(exitLabel == label) { "Attempt to remove non-obfuscated jump instruction" }
+
             // The instructions are removed
             state = State.IDLE
         } else {
