@@ -35,7 +35,7 @@ public class RadonBogusJumpInserterMethodVisitor(
         /**
          * Removing the exit label
          */
-        REMOVING_EXIT_LABEL,
+        REMOVING_INSTRUCTIONS,
     }
 
     private var state: State = State.LOADING
@@ -47,7 +47,7 @@ public class RadonBogusJumpInserterMethodVisitor(
     override fun visitLabel(label: Label) {
         // The exit label is the first label
         if (exitLabel == null) {
-            state = State.REMOVING_EXIT_LABEL
+            state = State.REMOVING_INSTRUCTIONS
 
             exitLabel = label
         } else {
@@ -68,7 +68,7 @@ public class RadonBogusJumpInserterMethodVisitor(
             // super.visitVarInsn(opcode, `var`)
         } else if (State.IDLE == state && Opcodes.ILOAD == opcode && predicateVariableIndex == `var`) {
             state = State.PATCHING
-        } else if (State.REMOVING_EXIT_LABEL != state) {
+        } else if (State.REMOVING_INSTRUCTIONS != state) {
             super.visitVarInsn(opcode, `var`)
         }
     }
@@ -78,7 +78,7 @@ public class RadonBogusJumpInserterMethodVisitor(
             && owner == predicateField.first && name == predicateField.second && descriptor == predicateField.third
         ) {
             // super.visitFieldInsn(opcode, owner, name, descriptor)
-        } else if(State.REMOVING_EXIT_LABEL != state) {
+        } else if(State.REMOVING_INSTRUCTIONS != state) {
             super.visitFieldInsn(opcode, owner, name, descriptor)
         }
     }
@@ -95,13 +95,13 @@ public class RadonBogusJumpInserterMethodVisitor(
     }
 
     override fun visitLdcInsn(value: Any?) {
-        if (State.REMOVING_EXIT_LABEL != state) {
+        if (State.REMOVING_INSTRUCTIONS != state) {
             super.visitLdcInsn(value)
         }
     }
 
     override fun visitInsn(opcode: Int) {
-        if (State.REMOVING_EXIT_LABEL != state) {
+        if (State.REMOVING_INSTRUCTIONS != state) {
             super.visitInsn(opcode)
         }
     }
