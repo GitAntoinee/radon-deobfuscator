@@ -1,5 +1,6 @@
 package com.github.gitantoinee.deobfuscator.radon.visitors.flow
 
+import org.objectweb.asm.Label
 import org.objectweb.asm.MethodVisitor
 import org.objectweb.asm.Opcodes
 
@@ -23,6 +24,15 @@ public class RadonGotoReplacerMethodVisitor(
     }
 
     private var state: State = State.IDLE
+
+    override fun visitJumpInsn(opcode: Int, label: Label) {
+        if (State.PATCHING == state) {
+            check(Opcodes.IFEQ == opcode) { "Invalid jump instruction while patching a replaced goto ($opcode)" }
+            super.visitJumpInsn(Opcodes.GOTO, label)
+        } else {
+            super.visitJumpInsn(opcode, label)
+        }
+    }
 
     override fun visitFieldInsn(opcode: Int, owner: String, name: String, descriptor: String) {
         check(state == State.IDLE) { "Field instruction visited while replacing a goto" }
