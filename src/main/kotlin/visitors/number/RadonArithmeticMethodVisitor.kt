@@ -21,12 +21,12 @@ public class RadonArithmeticMethodVisitor(inner: MethodVisitor? = null) : Method
 
     private fun pushInt(i: Int) {
         when {
-            sumOrNull == null -> sumOrNull = i
-            operandOrNull == null -> operandOrNull = i
+            sumOrNull == null -> sum = i
+            operandOrNull == null -> operand = i
             else -> {
                 // If no operator was present, the default operator is '-'
-                sumOrNull = sumOrNull!! - operandOrNull!!
-                operandOrNull = i
+                sum -= operandOrNull!!
+                operand = i
             }
         }
     }
