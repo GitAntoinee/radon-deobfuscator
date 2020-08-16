@@ -12,9 +12,9 @@ public class RadonGotoReplacerMethodVisitor(
     inner: MethodVisitor? = null,
 ) : MethodVisitor(Opcodes.ASM9, inner) {
     /**
-     * The name and the index of variable used as operand for IFEQ opcodes
+     * The index of variable used as operand for IFEQ opcodes
      */
-    private var predicateVar: Pair<String, Int>? = null
+    private var predicateVar: Int? = null
 
     /**
      * The current label
