@@ -4,7 +4,24 @@ import org.objectweb.asm.MethodVisitor
 import org.objectweb.asm.Opcodes
 
 public class RadonArithmeticMethodVisitor(inner: MethodVisitor? = null) : MethodVisitor(Opcodes.ASM9, inner) {
-    private var operand: Int? = null
+    private var sumOrNull: Int? = null
+    private var operandOrNull: Int? = null
+        set(value) {
+            println("Operator : $value")
+            field = value
+        }
+
+    private var sum: Int
+        get() = sumOrNull ?: error("Sum is null")
+        set(value) {
+            sumOrNull = value
+        }
+
+    private var operand: Int
+        get() = operandOrNull ?: error("Operand is null")
+        set(value) {
+            operandOrNull = value
+        }
 
     override fun visitInsn(opcode: Int) {
         when (opcode) {
@@ -15,6 +32,12 @@ public class RadonArithmeticMethodVisitor(inner: MethodVisitor? = null) : Method
             Opcodes.ICONST_3 -> operand = 3
             Opcodes.ICONST_4 -> operand = 4
             Opcodes.ICONST_5 -> operand = 5
+
+            Opcodes.IADD -> sum += operand
+            Opcodes.ISUB -> sum -= operand
+            Opcodes.IMUL -> sum *= operand
+            Opcodes.IDIV -> sum /= operand
+            Opcodes.IREM -> sum %= operand
 
             else -> super.visitInsn(opcode)
         }
