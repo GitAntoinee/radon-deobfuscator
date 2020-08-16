@@ -35,10 +35,13 @@ public class RadonBogusJumpInserterMethodVisitor(
 
     private var state: State = State.LOADING
 
+    private var predicateVariableIndex: Int? = null
+
     override fun visitLabel(label: Label) {
         // Set the state to IDLE when the label changes because the loading phase is only at the beginning of the method
         // when there is no labels. And the instructions of a bogus jump are only in a label
-        state = State.IDLE
+        // If the predicate variable is not found, then the deobfuscator cannot find bogus jump
+        state = if (predicateVariableIndex != null) State.IDLE else State.DISABLED
 
         super.visitLabel(label)
     }
