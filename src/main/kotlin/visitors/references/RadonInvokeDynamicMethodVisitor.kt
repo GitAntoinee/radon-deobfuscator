@@ -30,7 +30,7 @@ public class RadonInvokeDynamicMethodVisitor(inner: MethodVisitor? = null) : Met
         if (isObfuscated) {
             // TODO : Find xor encryption
 
-            val originalOwner = bootstrapMethodArguments[1].toString() xor 2893
+            val originalOwner = (bootstrapMethodArguments[1].toString() xor 2893).replace('.', '/')
             val originalName = bootstrapMethodArguments[2].toString() xor 2993
             val originalDescriptor = bootstrapMethodArguments[3].toString() xor 8372
 
