@@ -41,7 +41,7 @@ public class RadonGotoReplacerMethodVisitor(
 
         if (Opcodes.ISTORE == opcode && predicateVar == null && predicateField != null && currentLabel == null) {
             predicateVar = `var`
-        } else {
+        } else if(!predicateLoaded) {
             super.visitVarInsn(opcode, `var`)
         }
     }
