@@ -2,6 +2,7 @@ package com.github.gitantoinee.deobfuscator.radon
 
 import com.github.gitantoinee.deobfuscator.radon.visitors.RadonBadAnnotationClassVisitor
 import com.github.gitantoinee.deobfuscator.radon.visitors.RadonHideCodeClassVisitor
+import com.github.gitantoinee.deobfuscator.radon.visitors.flow.RadonBogusJumpInserterClassVisitor
 import com.github.gitantoinee.deobfuscator.radon.visitors.flow.RadonGotoReplacerClassVisitor
 import com.github.gitantoinee.deobfuscator.radon.visitors.number.RadonArithmeticClassVisitor
 import com.github.gitantoinee.deobfuscator.radon.visitors.references.RadonInvokeDynamicClassVisitor
@@ -16,10 +17,11 @@ public class RadonDeobfuscator {
         val writer = ClassWriter(reader, 0).also {
             reader.accept(
                 RadonHideCodeClassVisitor(
-                    RadonGotoReplacerClassVisitor(
-                        RadonArithmeticClassVisitor(
-                            RadonBadAnnotationClassVisitor(
-                                RadonInvokeDynamicClassVisitor(it))))),
+                    RadonBogusJumpInserterClassVisitor(
+                        RadonGotoReplacerClassVisitor(
+                            RadonArithmeticClassVisitor(
+                                RadonBadAnnotationClassVisitor(
+                                    RadonInvokeDynamicClassVisitor(it)))))),
                 0)
         }
         outputStream.write(writer.toByteArray())
