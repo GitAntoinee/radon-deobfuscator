@@ -1,5 +1,6 @@
 plugins {
     kotlin("jvm") version "1.4.0-rc"
+    id("com.github.johnrengelman.shadow") version "6.0.0"
 }
 
 group = "com.github.gitantoinee.deobfuscator.radon"
@@ -22,5 +23,11 @@ kotlin {
     target.compilations.forEach { compilation ->
         compilation.kotlinOptions.jvmTarget = "1.8"
         compilation.kotlinOptions.allWarningsAsErrors = true
+    }
+}
+
+tasks {
+    shadowJar {
+        manifest.attributes["Main-Class"] = "com.github.gitantoinee.deobfuscator.radon.MainKt"
     }
 }
