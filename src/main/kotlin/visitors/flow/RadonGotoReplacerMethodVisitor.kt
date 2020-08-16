@@ -46,6 +46,23 @@ public class RadonGotoReplacerMethodVisitor(
         }
     }
 
+    override fun visitJumpInsn(opcode: Int, label: Label) {
+        if (!predicateLoaded) {
+            super.visitJumpInsn(opcode, label)
+            return
+        }
+
+        when (opcode) {
+            Opcodes.IFEQ -> super.visitJumpInsn(Opcodes.GOTO, label)
+            Opcodes.IFNE -> Unit // Just continue
+            else -> {
+                println("Unknown opcode $opcode to $label")
+                super.visitVarInsn(Opcodes.ILOAD, predicateVar!!)
+                super.visitJumpInsn(opcode, label)
+            }
+        }
+    }
+
     override fun visitFieldInsn(opcode: Int, owner: String, name: String, descriptor: String) {
         if (Opcodes.GETSTATIC == opcode
             && (possiblePredicateFields.isEmpty() || name in possiblePredicateFields)
