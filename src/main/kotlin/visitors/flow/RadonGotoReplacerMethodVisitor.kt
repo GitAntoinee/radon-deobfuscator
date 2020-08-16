@@ -104,7 +104,7 @@ public class RadonGotoReplacerMethodVisitor(
     }
 
     override fun visitFieldInsn(opcode: Int, owner: String, name: String, descriptor: String) {
-        if (Opcodes.GETSTATIC == opcode
+        if (State.FINDING_PREDICATE == state && Opcodes.GETSTATIC == opcode
             && (possiblePredicateFields.isEmpty() || name in possiblePredicateFields)
             && descriptor == "Z"
             && predicateVar == null && predicateField == null && currentLabel == null
