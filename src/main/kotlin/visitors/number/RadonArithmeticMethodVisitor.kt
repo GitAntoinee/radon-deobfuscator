@@ -41,6 +41,13 @@ public class RadonArithmeticMethodVisitor(inner: MethodVisitor? = null) : Method
             Opcodes.ICONST_4 -> pushInt(4)
             Opcodes.ICONST_5 -> pushInt(5)
 
+            // Operators
+            Opcodes.IADD -> sum += operand
+            Opcodes.ISUB -> sum -= operand
+            Opcodes.IMUL -> sum *= operand
+            Opcodes.IDIV -> sum /= operand
+            Opcodes.IREM -> sum %= operand
+
             // Non-arithmetic opcode
             else -> super.visitInsn(opcode)
         }
