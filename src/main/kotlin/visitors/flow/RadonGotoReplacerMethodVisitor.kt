@@ -22,6 +22,11 @@ public class RadonGotoReplacerMethodVisitor(
     private var predicateField: String? = null
 
     /**
+     * The predicate variable is loaded
+     */
+    private var predicateLoaded: Boolean = false
+
+    /**
      * The current label
      */
     private var currentLabel: Label? = null
@@ -32,7 +37,12 @@ public class RadonGotoReplacerMethodVisitor(
     }
 
     override fun visitVarInsn(opcode: Int, `var`: Int) {
-        if (Opcodes.ISTORE == opcode
+        if (Opcodes.ILOAD == opcode
+            && predicateVar != null && predicateField != null && currentLabel != null
+            && predicateVar == `var`
+        ) {
+            predicateLoaded = true
+        } else if (Opcodes.ISTORE == opcode
             && predicateVar == null && predicateField != null && currentLabel == null
         ) {
             predicateVar = `var`
