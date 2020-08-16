@@ -42,9 +42,9 @@ public class RadonGotoReplacerMethodVisitor(
         if (Opcodes.ISTORE == opcode && predicateVar == null && predicateField != null && currentLabel == null) {
             predicateVar = `var`
             super.visitVarInsn(opcode, `var`)
-        } else if (!predicateLoaded) {
-            super.visitVarInsn(opcode, `var`)
         }
+
+        super.visitVarInsn(opcode, `var`)
     }
 
     override fun visitJumpInsn(opcode: Int, label: Label) {
@@ -69,9 +69,8 @@ public class RadonGotoReplacerMethodVisitor(
             && predicateVar == null && predicateField == null && currentLabel == null
         ) {
             predicateField = name
-            super.visitFieldInsn(opcode, owner, name, descriptor)
-        } else {
-            super.visitFieldInsn(opcode, owner, name, descriptor)
         }
+
+        super.visitFieldInsn(opcode, owner, name, descriptor)
     }
 }
