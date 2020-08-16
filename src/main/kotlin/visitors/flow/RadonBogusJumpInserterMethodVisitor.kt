@@ -45,4 +45,13 @@ public class RadonBogusJumpInserterMethodVisitor(
 
         super.visitLabel(label)
     }
+
+    override fun visitVarInsn(opcode: Int, `var`: Int) {
+        if (State.LOADING == state && Opcodes.ISTORE == opcode) {
+            assert(predicateVariableIndex == null) { "Predicate variable found twice" }
+            predicateVariableIndex = `var`
+        }
+
+        super.visitVarInsn(opcode, `var`)
+    }
 }
