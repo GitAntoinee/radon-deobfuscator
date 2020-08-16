@@ -69,7 +69,7 @@ public class RadonGotoReplacerMethodVisitor(
             && predicateVar == null && predicateField == null && currentLabel == null
         ) {
             predicateField = name
-            // super.visitFieldInsn(opcode, owner, name, descriptor)
+            super.visitFieldInsn(opcode, owner, name, descriptor)
         } else {
             super.visitFieldInsn(opcode, owner, name, descriptor)
         }
