@@ -28,6 +28,7 @@ public class RadonGotoReplacerMethodVisitor(
 
     override fun visitLabel(label: Label) {
         currentLabel = label
+        super.visitLabel(label)
     }
 
     override fun visitVarInsn(opcode: Int, `var`: Int) {
