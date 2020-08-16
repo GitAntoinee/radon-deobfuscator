@@ -15,9 +15,9 @@ public class RadonDeobfuscator {
         val reader = ClassReader(inputStream.readBytes())
         val writer = ClassWriter(reader, 0).also {
             reader.accept(
-                RadonGotoReplacerClassVisitor(
-                    RadonArithmeticClassVisitor(
-                        RadonHideCodeClassVisitor(
+                RadonHideCodeClassVisitor(
+                    RadonGotoReplacerClassVisitor(
+                        RadonArithmeticClassVisitor(
                             RadonBadAnnotationClassVisitor(
                                 RadonInvokeDynamicClassVisitor(it))))),
                 0)
