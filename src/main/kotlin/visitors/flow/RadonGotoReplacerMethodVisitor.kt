@@ -10,4 +10,17 @@ public class RadonGotoReplacerMethodVisitor(
     private val predicateField: Triple<String, String, String>,
     inner: MethodVisitor? = null,
 ) : MethodVisitor(Opcodes.ASM9, inner) {
+    private enum class State {
+        /**
+         * Wait for a replaced goto
+         */
+        IDLE,
+
+        /**
+         * Replacing a goto
+         */
+        PATCHING,
+    }
+
+    private var state: State = State.IDLE
 }
