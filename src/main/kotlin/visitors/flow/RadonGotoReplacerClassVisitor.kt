@@ -37,6 +37,7 @@ public class RadonGotoReplacerClassVisitor(inner: ClassVisitor? = null) : ClassV
     ): FieldVisitor? {
         if (access == PREDICATE_FIELD_ACCESS && descriptor == PREDICATE_FIELD_DESCRIPTOR) {
             predicateField = Triple(owner, name, descriptor)
+            return null
         }
 
         return super.visitField(access, name, descriptor, signature, value)
