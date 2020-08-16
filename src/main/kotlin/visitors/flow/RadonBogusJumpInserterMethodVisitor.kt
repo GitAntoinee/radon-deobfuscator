@@ -10,7 +10,7 @@ public class RadonBogusJumpInserterMethodVisitor(
      */
     private val predicateField: Triple<String, String, String>,
     inner: MethodVisitor? = null,
-) : MethodVisitor(Opcodes.ASM9, inner) {
+) : MethodVisitor(Opcodes.ASM9, inner), Opcodes {
     private enum class State {
         /**
          * The predicate local variable is not found
