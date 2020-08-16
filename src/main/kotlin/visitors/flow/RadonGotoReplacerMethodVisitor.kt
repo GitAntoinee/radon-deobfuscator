@@ -39,9 +39,7 @@ public class RadonGotoReplacerMethodVisitor(
     override fun visitVarInsn(opcode: Int, `var`: Int) {
         predicateLoaded = Opcodes.ILOAD == opcode && predicateField != null && predicateVar == `var`
 
-        if (Opcodes.ISTORE == opcode
-            && predicateVar == null && predicateField != null && currentLabel == null
-        ) {
+        if (Opcodes.ISTORE == opcode && predicateVar == null && predicateField != null && currentLabel == null) {
             predicateVar = `var`
         } else {
             super.visitVarInsn(opcode, `var`)
