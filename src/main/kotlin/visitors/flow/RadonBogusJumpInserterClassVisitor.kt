@@ -11,7 +11,22 @@ public class RadonBogusJumpInserterClassVisitor(inner: ClassVisitor? = null) : C
         const val PREDICATE_FIELD_DESCRIPTOR: String = "Z"
     }
 
-    private val possiblePredicateFields: MutableList<String> = mutableListOf()
+    private val possiblePredicateFields: MutableList<Triple<String, String, String>> = mutableListOf()
+
+    private lateinit var owner: String
+
+    override fun visit(
+        version: Int,
+        access: Int,
+        name: String,
+        signature: String?,
+        superName: String?,
+        interfaces: Array<out String>?,
+    ) {
+        owner = name
+
+        super.visit(version, access, name, signature, superName, interfaces)
+    }
 
     override fun visitField(
         access: Int,
@@ -34,7 +49,7 @@ public class RadonBogusJumpInserterClassVisitor(inner: ClassVisitor? = null) : C
         signature: String?,
         exceptions: Array<out String>?,
     ): MethodVisitor {
-        val inner =  super.visitMethod(access, name, descriptor, signature, exceptions)
+        val inner = super.visitMethod(access, name, descriptor, signature, exceptions)
 
         return RadonBogusJumpInserterMethodVisitor(inner)
     }
