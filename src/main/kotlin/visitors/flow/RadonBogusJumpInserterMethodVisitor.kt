@@ -31,6 +31,11 @@ public class RadonBogusJumpInserterMethodVisitor(
          * Removing a bogus jump
          */
         PATCHING,
+
+        /**
+         * Removing the exit label
+         */
+        REMOVING_EXIT_LABEL,
     }
 
     private var state: State = State.LOADING
