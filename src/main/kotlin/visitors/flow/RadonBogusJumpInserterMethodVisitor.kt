@@ -86,12 +86,4 @@ public class RadonBogusJumpInserterMethodVisitor(
             super.visitJumpInsn(opcode, label)
         }
     }
-
-    override fun visitLdcInsn(value: Any?) {
-        super.visitLdcInsn(value)
-    }
-
-    override fun visitInsn(opcode: Int) {
-        super.visitInsn(opcode)
-    }
 }
