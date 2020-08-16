@@ -31,11 +31,6 @@ public class RadonBogusJumpInserterMethodVisitor(
          * Removing a bogus jump
          */
         PATCHING,
-
-        /**
-         * Removing the exit label
-         */
-        REMOVING_INSTRUCTIONS,
     }
 
     private var state: State = State.LOADING
@@ -45,17 +40,15 @@ public class RadonBogusJumpInserterMethodVisitor(
     private var exitLabel: Label? = null
 
     override fun visitLabel(label: Label) {
+        // Set the state to IDLE when the label changes because the loading phase is only at the beginning of the method
+        // when there is no labels. And the instructions of a bogus jump are only in a label
+        // If the predicate variable is not found, then the deobfuscator cannot find bogus jump
+        state = if (predicateVariableIndex != null) State.IDLE else State.DISABLED
+
         // The exit label is the first label
         if (exitLabel == null) {
-            state = State.REMOVING_INSTRUCTIONS
-
             exitLabel = label
         } else {
-            // Set the state to IDLE when the label changes because the loading phase is only at the beginning of the method
-            // when there is no labels. And the instructions of a bogus jump are only in a label
-            // If the predicate variable is not found, then the deobfuscator cannot find bogus jump
-            state = if (predicateVariableIndex != null) State.IDLE else State.DISABLED
-
             super.visitLabel(label)
         }
     }
@@ -68,7 +61,7 @@ public class RadonBogusJumpInserterMethodVisitor(
             // super.visitVarInsn(opcode, `var`)
         } else if (State.IDLE == state && Opcodes.ILOAD == opcode && predicateVariableIndex == `var`) {
             state = State.PATCHING
-        } else if (State.REMOVING_INSTRUCTIONS != state) {
+        } else {
             super.visitVarInsn(opcode, `var`)
         }
     }
@@ -78,7 +71,7 @@ public class RadonBogusJumpInserterMethodVisitor(
             && owner == predicateField.first && name == predicateField.second && descriptor == predicateField.third
         ) {
             // super.visitFieldInsn(opcode, owner, name, descriptor)
-        } else if(State.REMOVING_INSTRUCTIONS != state) {
+        } else {
             super.visitFieldInsn(opcode, owner, name, descriptor)
         }
     }
@@ -95,14 +88,10 @@ public class RadonBogusJumpInserterMethodVisitor(
     }
 
     override fun visitLdcInsn(value: Any?) {
-        if (State.REMOVING_INSTRUCTIONS != state) {
-            super.visitLdcInsn(value)
-        }
+        super.visitLdcInsn(value)
     }
 
     override fun visitInsn(opcode: Int) {
-        if (State.REMOVING_INSTRUCTIONS != state) {
-            super.visitInsn(opcode)
-        }
+        super.visitInsn(opcode)
     }
 }
