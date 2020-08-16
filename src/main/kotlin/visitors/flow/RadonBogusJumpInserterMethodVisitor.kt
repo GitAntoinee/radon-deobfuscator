@@ -53,9 +53,10 @@ public class RadonBogusJumpInserterMethodVisitor(
         // The exit label is the first label
         if (exitLabel == null) {
             exitLabel = label
+            state = State.REMOVING_EXIT_LABEL
+        } else {
+            super.visitLabel(label)
         }
-
-        super.visitLabel(label)
     }
 
     override fun visitVarInsn(opcode: Int, `var`: Int) {
