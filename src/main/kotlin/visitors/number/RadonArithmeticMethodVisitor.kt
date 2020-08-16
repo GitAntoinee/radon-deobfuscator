@@ -15,6 +15,8 @@ public class RadonArithmeticMethodVisitor(inner: MethodVisitor? = null) : Method
             Opcodes.ICONST_3 -> operand = 3
             Opcodes.ICONST_4 -> operand = 4
             Opcodes.ICONST_5 -> operand = 5
+
+            else -> super.visitInsn(opcode)
         }
     }
 
