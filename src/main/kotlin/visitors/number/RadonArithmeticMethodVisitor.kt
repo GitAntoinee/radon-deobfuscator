@@ -18,4 +18,19 @@ public class RadonArithmeticMethodVisitor(inner: MethodVisitor? = null) : Method
             }
         }
     }
+
+    override fun visitInsn(opcode: Int) {
+        when (opcode) {
+            Opcodes.ICONST_M1 -> pushInt(-1)
+            Opcodes.ICONST_0 -> pushInt(0)
+            Opcodes.ICONST_1 -> pushInt(1)
+            Opcodes.ICONST_2 -> pushInt(2)
+            Opcodes.ICONST_3 -> pushInt(3)
+            Opcodes.ICONST_4 -> pushInt(4)
+            Opcodes.ICONST_5 -> pushInt(5)
+
+            // Non-arithmetic opcode
+            else -> super.visitInsn(opcode)
+        }
+    }
 }
