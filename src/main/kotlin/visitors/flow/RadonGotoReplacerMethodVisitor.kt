@@ -48,8 +48,8 @@ public class RadonGotoReplacerMethodVisitor(
 
         if (Opcodes.GETSTATIC == opcode && owner == predicateField.first && name == predicateField.second && descriptor == predicateField.third) {
             state = State.PATCHING
+        } else {
+            super.visitFieldInsn(opcode, owner, name, descriptor)
         }
-
-        super.visitFieldInsn(opcode, owner, name, descriptor)
     }
 }
