@@ -20,7 +20,7 @@ public class RadonArithmeticMethodVisitor(inner: MethodVisitor? = null) : Method
         }
 
     private fun pushInt(i: Int) {
-        if (sumOrNull != null) sum = i
+        if (sumOrNull == null) sum = i
         else operand = i
     }
 
