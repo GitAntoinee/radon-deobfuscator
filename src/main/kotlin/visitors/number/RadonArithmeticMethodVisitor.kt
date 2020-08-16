@@ -41,4 +41,11 @@ public class RadonArithmeticMethodVisitor(inner: MethodVisitor? = null) : Method
             super.visitIntInsn(opcode, operand)
         }
     }
+
+    override fun visitLdcInsn(value: Any?) {
+        when (value) {
+            is Number -> pushInt(value.toInt())
+            else -> super.visitLdcInsn(value)
+        }
+    }
 }
