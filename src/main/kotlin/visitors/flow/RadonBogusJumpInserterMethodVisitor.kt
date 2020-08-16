@@ -58,11 +58,21 @@ public class RadonBogusJumpInserterMethodVisitor(
             check(predicateVariableIndex == null) { "Predicate variable found twice" }
             predicateVariableIndex = `var`
 
-            super.visitVarInsn(opcode, `var`)
+            // super.visitVarInsn(opcode, `var`)
         } else if (State.IDLE == state && Opcodes.ILOAD == opcode && predicateVariableIndex == `var`) {
             state = State.REMOVING
         } else {
             super.visitVarInsn(opcode, `var`)
+        }
+    }
+
+    override fun visitFieldInsn(opcode: Int, owner: String, name: String, descriptor: String) {
+        if (State.LOADING == state && Opcodes.GETSTATIC == opcode
+            && owner == predicateField.first && name == predicateField.second && descriptor == predicateField.third
+        ) {
+            // super.visitFieldInsn(opcode, owner, name, descriptor)
+        } else {
+            super.visitFieldInsn(opcode, owner, name, descriptor)
         }
     }
 
