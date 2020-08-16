@@ -38,12 +38,11 @@ public class RadonArithmeticMethodVisitor(inner: MethodVisitor? = null) : Method
                     4 -> super.visitInsn(Opcodes.ICONST_4)
                     5 -> super.visitInsn(Opcodes.ICONST_5)
 
-                    else -> when {
-                        sum == null -> super.visitInsn(opcode)
+                    null -> super.visitInsn(opcode)
 
+                    else -> when {
                         sum!! >= Byte.MIN_VALUE && sum!! <= Byte.MAX_VALUE -> super.visitIntInsn(Opcodes.BIPUSH, sum!!)
-                        sum!! >= Short.MIN_VALUE && sum!! <= Short.MAX_VALUE -> super.visitIntInsn(Opcodes.SIPUSH,
-                            sum!!)
+                        sum!! >= Short.MIN_VALUE && sum!! <= Short.MAX_VALUE -> super.visitIntInsn(Opcodes.SIPUSH, sum!!)
                         else -> super.visitLdcInsn(sum!!)
                     }
                 }
@@ -60,10 +59,11 @@ public class RadonArithmeticMethodVisitor(inner: MethodVisitor? = null) : Method
     override fun visitLdcInsn(value: Any) {
         when (value) {
             is Number -> operand = value
-            is String, is Type, is Handle, is ConstantDynamic -> sum = null
+            is String, is Type, is Handle, is ConstantDynamic -> {
+                sum = null
+                super.visitLdcInsn(value)
+            }
             else -> error("Load constant operand is invalid")
         }
-
-        super.visitLdcInsn(value)
     }
 }
