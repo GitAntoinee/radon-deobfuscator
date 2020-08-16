@@ -9,3 +9,4 @@ The goal of this project was to create a deobfuscator for radon who do not use a
 * GotoReplacer
 * BogusJumpInserter
 * BadAnnotation
+* Arithmetic
