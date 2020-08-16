@@ -4,6 +4,7 @@ import com.github.gitantoinee.deobfuscator.radon.visitors.RadonBadAnnotationClas
 import com.github.gitantoinee.deobfuscator.radon.visitors.RadonHideCodeClassVisitor
 import com.github.gitantoinee.deobfuscator.radon.visitors.flow.RadonBogusJumpInserterClassVisitor
 import com.github.gitantoinee.deobfuscator.radon.visitors.flow.RadonGotoReplacerClassVisitor
+import com.github.gitantoinee.deobfuscator.radon.visitors.number.RadonArithmeticClassVisitor
 import com.github.gitantoinee.deobfuscator.radon.visitors.references.RadonInvokeDynamicClassVisitor
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.ClassWriter
@@ -18,8 +19,9 @@ public class RadonDeobfuscator {
                 RadonHideCodeClassVisitor(
                     RadonBogusJumpInserterClassVisitor(
                         RadonGotoReplacerClassVisitor(
-                                RadonBadAnnotationClassVisitor(
-                                    RadonInvokeDynamicClassVisitor(it))))),
+                            RadonBadAnnotationClassVisitor(
+                                RadonArithmeticClassVisitor(
+                                    RadonInvokeDynamicClassVisitor(it)))))),
                 0)
         }
         outputStream.write(writer.toByteArray())
