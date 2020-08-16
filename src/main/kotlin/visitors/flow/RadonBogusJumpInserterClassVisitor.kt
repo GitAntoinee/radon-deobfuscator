@@ -51,6 +51,7 @@ public class RadonBogusJumpInserterClassVisitor(inner: ClassVisitor? = null) : C
     ): MethodVisitor {
         val inner = super.visitMethod(access, name, descriptor, signature, exceptions)
 
-        return RadonBogusJumpInserterMethodVisitor(inner)
+        val predicateField = possiblePredicateFields.firstOrNull()
+        return predicateField?.let { RadonBogusJumpInserterMethodVisitor(it, inner) } ?: inner
     }
 }
