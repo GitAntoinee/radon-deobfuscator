@@ -11,7 +11,22 @@ public class RadonGotoReplacerClassVisitor(inner: ClassVisitor? = null) : ClassV
         const val PREDICATE_FIELD_DESCRIPTOR: String = "Z"
     }
 
-    private val possiblePredicateFields: MutableList<String> = mutableListOf()
+    private lateinit var owner: String
+
+    private var predicateField: Triple<String, String, String>? = null
+
+    override fun visit(
+        version: Int,
+        access: Int,
+        name: String,
+        signature: String?,
+        superName: String?,
+        interfaces: Array<out String>?,
+    ) {
+        owner = name
+
+        super.visit(version, access, name, signature, superName, interfaces)
+    }
 
     override fun visitField(
         access: Int,
@@ -21,7 +36,7 @@ public class RadonGotoReplacerClassVisitor(inner: ClassVisitor? = null) : ClassV
         value: Any?,
     ): FieldVisitor? {
         if (access == PREDICATE_FIELD_ACCESS && descriptor == PREDICATE_FIELD_DESCRIPTOR) {
-            possiblePredicateFields.add(name)
+            predicateField = Triple(owner, name, descriptor)
         }
 
         return super.visitField(access, name, descriptor, signature, value)
@@ -36,6 +51,6 @@ public class RadonGotoReplacerClassVisitor(inner: ClassVisitor? = null) : ClassV
     ): MethodVisitor {
         val inner = super.visitMethod(access, name, descriptor, signature, exceptions)
 
-        return RadonGotoReplacerMethodVisitor(possiblePredicateFields, inner)
+        return predicateField?.let { RadonGotoReplacerMethodVisitor(it, inner) } ?: inner
     }
 }
