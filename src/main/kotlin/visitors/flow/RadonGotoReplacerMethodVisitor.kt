@@ -11,6 +11,30 @@ public class RadonGotoReplacerMethodVisitor(
     private val possiblePredicateFields: List<String> = emptyList(),
     inner: MethodVisitor? = null,
 ) : MethodVisitor(Opcodes.ASM9, inner) {
+    private enum class State {
+        /**
+         * Predicate field and/or predicate field not found
+         */
+        DISABLED,
+
+        /**
+         * Initial state, find predicate variable and predicate field
+         */
+        FINDING_PREDICATE,
+
+        /**
+         * Waiting
+         */
+        IDLE,
+
+        /**
+         * Remove or replace the created instructions
+         *
+         * Remove ILOAD, IFEQ, ACONST_NULL and ATHROW
+         */
+        REMOVING
+    }
+
     /**
      * The index of variable used as operand for IFEQ opcodes
      */
@@ -21,10 +45,7 @@ public class RadonGotoReplacerMethodVisitor(
      */
     private var predicateField: String? = null
 
-    /**
-     * The predicate variable is loaded
-     */
-    private var predicateLoaded: Boolean = false
+    private var state: State = State.FINDING_PREDICATE
 
     /**
      * The current label
@@ -32,12 +53,25 @@ public class RadonGotoReplacerMethodVisitor(
     private var currentLabel: Label? = null
 
     override fun visitLabel(label: Label) {
+        if (State.FINDING_PREDICATE == state) {
+            state = State.DISABLED
+        }
+
         currentLabel = label
         super.visitLabel(label)
     }
 
     override fun visitVarInsn(opcode: Int, `var`: Int) {
-        predicateLoaded = Opcodes.ILOAD == opcode && predicateField != null && predicateVar == `var`
+        if (State.DISABLED == state) {
+            return super.visitVarInsn(opcode, `var`)
+        }
+
+        if (Opcodes.ILOAD == opcode && predicateField != null && predicateVar == `var`) {
+            state = State.REMOVING
+            return
+        } else {
+            state = State.IDLE
+        }
 
         if (Opcodes.ISTORE == opcode && predicateVar == null && predicateField != null && currentLabel == null) {
             predicateVar = `var`
@@ -47,7 +81,7 @@ public class RadonGotoReplacerMethodVisitor(
     }
 
     override fun visitJumpInsn(opcode: Int, label: Label) {
-        if (!predicateLoaded) {
+        if (State.REMOVING != state) {
             super.visitJumpInsn(opcode, label)
             return
         }
