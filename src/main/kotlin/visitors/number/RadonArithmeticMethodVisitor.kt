@@ -25,7 +25,7 @@ public class RadonArithmeticMethodVisitor(inner: MethodVisitor? = null) : Method
             operandOrNull == null -> operand = i
             else -> {
                 // If no operator was present, the default operator is '-'
-                sum -= operandOrNull!!
+                sum -= operand
                 operand = i
             }
         }
