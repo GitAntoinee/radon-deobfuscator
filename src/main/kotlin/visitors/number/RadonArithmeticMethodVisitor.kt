@@ -30,6 +30,8 @@ public class RadonArithmeticMethodVisitor(inner: MethodVisitor? = null) : Method
 
             else -> {
                 when (sum) {
+                    null -> Unit
+
                     -1 -> super.visitInsn(Opcodes.ICONST_M1)
                     0 -> super.visitInsn(Opcodes.ICONST_0)
                     1 -> super.visitInsn(Opcodes.ICONST_1)
@@ -38,8 +40,6 @@ public class RadonArithmeticMethodVisitor(inner: MethodVisitor? = null) : Method
                     4 -> super.visitInsn(Opcodes.ICONST_4)
                     5 -> super.visitInsn(Opcodes.ICONST_5)
 
-                    null -> super.visitInsn(opcode)
-
                     else -> when {
                         sum!! >= Byte.MIN_VALUE && sum!! <= Byte.MAX_VALUE -> super.visitIntInsn(Opcodes.BIPUSH, sum!!)
                         sum!! >= Short.MIN_VALUE && sum!! <= Short.MAX_VALUE -> super.visitIntInsn(Opcodes.SIPUSH, sum!!)
@@ -47,7 +47,7 @@ public class RadonArithmeticMethodVisitor(inner: MethodVisitor? = null) : Method
                     }
                 }
 
-                sum = null
+                super.visitInsn(opcode)
             }
         }
     }
