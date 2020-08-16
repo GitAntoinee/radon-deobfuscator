@@ -52,6 +52,14 @@ public class RadonGotoReplacerMethodVisitor(
      */
     private var currentLabel: Label? = null
 
+    override fun visitInsn(opcode: Int) {
+        if (State.REMOVING == state && (Opcodes.ACONST_NULL == opcode || Opcodes.ATHROW == opcode)) {
+            return
+        }
+
+        super.visitInsn(opcode)
+    }
+
     override fun visitLabel(label: Label) {
         if (State.FINDING_PREDICATE == state) {
             state = State.DISABLED
