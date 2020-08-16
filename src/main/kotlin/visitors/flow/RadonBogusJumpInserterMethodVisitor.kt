@@ -68,7 +68,7 @@ public class RadonBogusJumpInserterMethodVisitor(
             // super.visitVarInsn(opcode, `var`)
         } else if (State.IDLE == state && Opcodes.ILOAD == opcode && predicateVariableIndex == `var`) {
             state = State.PATCHING
-        } else {
+        } else if (State.REMOVING_EXIT_LABEL != state) {
             super.visitVarInsn(opcode, `var`)
         }
     }
@@ -78,7 +78,7 @@ public class RadonBogusJumpInserterMethodVisitor(
             && owner == predicateField.first && name == predicateField.second && descriptor == predicateField.third
         ) {
             // super.visitFieldInsn(opcode, owner, name, descriptor)
-        } else {
+        } else if(State.REMOVING_EXIT_LABEL != state) {
             super.visitFieldInsn(opcode, owner, name, descriptor)
         }
     }
