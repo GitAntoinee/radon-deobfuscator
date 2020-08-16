@@ -17,6 +17,11 @@ public class RadonGotoReplacerMethodVisitor(
     private var predicateVar: Int? = null
 
     /**
+     * The predicate field
+     */
+    private var predicateField: String? = null
+
+    /**
      * The current label
      */
     private var currentLabel: Label? = null
@@ -30,6 +35,18 @@ public class RadonGotoReplacerMethodVisitor(
             predicateVar = `var`
         } else {
             super.visitVarInsn(opcode, `var`)
+        }
+    }
+
+    override fun visitFieldInsn(opcode: Int, owner: String, name: String, descriptor: String) {
+        if (Opcodes.GETSTATIC == opcode
+            && (possiblePredicateFields.isEmpty() || name in possiblePredicateFields)
+            && descriptor == "Z"
+            && predicateVar == null && predicateField == null && currentLabel == null
+        ) {
+            predicateField = name
+        } else {
+            super.visitFieldInsn(opcode, owner, name, descriptor)
         }
     }
 }
