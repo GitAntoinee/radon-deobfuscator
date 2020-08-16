@@ -37,7 +37,6 @@ public class RadonBogusJumpInserterClassVisitor(inner: ClassVisitor? = null) : C
     ): FieldVisitor? {
         if (access == PREDICATE_FIELD_ACCESS && descriptor == PREDICATE_FIELD_DESCRIPTOR) {
             possiblePredicateFields.add(Triple(owner, name, descriptor))
-            return null
         }
 
         return super.visitField(access, name, descriptor, signature, value)
