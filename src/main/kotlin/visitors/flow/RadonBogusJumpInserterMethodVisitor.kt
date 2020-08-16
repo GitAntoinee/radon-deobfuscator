@@ -30,7 +30,7 @@ public class RadonBogusJumpInserterMethodVisitor(
         /**
          * Removing a bogus jump
          */
-        REMOVING,
+        PATCHING,
     }
 
     private var state: State = State.LOADING
@@ -60,7 +60,7 @@ public class RadonBogusJumpInserterMethodVisitor(
 
             // super.visitVarInsn(opcode, `var`)
         } else if (State.IDLE == state && Opcodes.ILOAD == opcode && predicateVariableIndex == `var`) {
-            state = State.REMOVING
+            state = State.PATCHING
         } else {
             super.visitVarInsn(opcode, `var`)
         }
@@ -77,7 +77,7 @@ public class RadonBogusJumpInserterMethodVisitor(
     }
 
     override fun visitJumpInsn(opcode: Int, label: Label) {
-        if (State.REMOVING == state && Opcodes.IFNE == opcode) {
+        if (State.PATCHING == state && Opcodes.IFNE == opcode) {
             check(exitLabel == label) { "Attempt to remove non-obfuscated jump instruction" }
 
             // The instructions are removed
