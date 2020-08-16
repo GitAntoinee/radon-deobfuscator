@@ -99,12 +99,4 @@ public class RadonBogusJumpInserterMethodVisitor(
             super.visitLocalVariable(name, descriptor, signature, start, end, index)
         }
     }
-
-    override fun visitMaxs(maxStack: Int, maxLocals: Int) {
-        if (predicateVariableIndex != null) {
-            super.visitMaxs(maxStack, maxLocals - 1)
-        } else {
-            super.visitMaxs(maxStack, maxLocals)
-        }
-    }
 }
