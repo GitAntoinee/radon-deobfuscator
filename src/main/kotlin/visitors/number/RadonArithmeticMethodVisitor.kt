@@ -50,6 +50,10 @@ public class RadonArithmeticMethodVisitor(inner: MethodVisitor? = null) : Method
 
             // Non-arithmetic opcode
             else -> {
+                when (sumOrNull) {
+                    null -> Unit // Just continue
+                }
+
                 sumOrNull = null
                 super.visitInsn(opcode)
             }
