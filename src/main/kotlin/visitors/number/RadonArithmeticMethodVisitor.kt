@@ -47,6 +47,7 @@ public class RadonArithmeticMethodVisitor(inner: MethodVisitor? = null) : Method
                     }
                 }
 
+                sum = null
                 super.visitInsn(opcode)
             }
         }
