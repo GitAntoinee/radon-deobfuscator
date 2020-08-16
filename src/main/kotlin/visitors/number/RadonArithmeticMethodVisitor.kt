@@ -49,8 +49,13 @@ public class RadonArithmeticMethodVisitor(inner: MethodVisitor? = null) : Method
             Opcodes.IREM -> sum %= operand
 
             // Non-arithmetic opcode
-            else -> super.visitInsn(opcode)
+            else -> {
+                sumOrNull = null
+                super.visitInsn(opcode)
+            }
         }
+
+        operandOrNull = null
     }
 
     override fun visitIntInsn(opcode: Int, operand: Int) {
