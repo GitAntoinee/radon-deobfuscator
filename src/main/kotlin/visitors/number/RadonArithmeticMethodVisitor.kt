@@ -7,6 +7,18 @@ public class RadonArithmeticMethodVisitor(inner: MethodVisitor? = null) : Method
     private var sumOrNull: Int? = null
     private var operandOrNull: Int? = null
 
+    private var sum: Int
+        get() = sumOrNull ?: error("Sum is null")
+        set(value) {
+            sumOrNull = value
+        }
+
+    private var operand: Int
+        get() = operandOrNull ?: error("Operand is null")
+        set(value) {
+            operandOrNull = value
+        }
+
     private fun pushInt(i: Int) {
         when {
             sumOrNull == null -> sumOrNull = i
