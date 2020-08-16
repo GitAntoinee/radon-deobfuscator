@@ -17,4 +17,12 @@ public class RadonArithmeticMethodVisitor(inner: MethodVisitor? = null) : Method
             Opcodes.ICONST_5 -> operand = 5
         }
     }
+
+    override fun visitIntInsn(opcode: Int, operand: Int) {
+        if (Opcodes.BIPUSH == opcode || Opcodes.SIPUSH == opcode) {
+            this.operand = operand
+        } else {
+            super.visitIntInsn(opcode, operand)
+        }
+    }
 }
