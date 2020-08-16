@@ -10,5 +10,22 @@ public class RadonBogusJumpInserterMethodVisitor(
     private val predicateField: Triple<String, String, String>,
     inner: MethodVisitor? = null,
 ) : MethodVisitor(Opcodes.ASM9, inner) {
+    private enum class State {
+        /**
+         * Find elements used in IDLE and REMOVING states
+         */
+        LOADING,
 
+        /**
+         * Wait for a bogus jump
+         */
+        IDLE,
+
+        /**
+         * Removing a bogus jump
+         */
+        REMOVING,
+    }
+
+    private var state: State = State.LOADING
 }
