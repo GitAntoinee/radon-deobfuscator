@@ -8,7 +8,7 @@ public class RadonGotoReplacerMethodVisitor(
     /**
      * The possible predicate fields
      */
-    private val possiblePredicateFields: List<String>,
+    private val possiblePredicateFields: List<String> = emptyList(),
     inner: MethodVisitor? = null,
 ) : MethodVisitor(Opcodes.ASM9, inner) {
     /**
