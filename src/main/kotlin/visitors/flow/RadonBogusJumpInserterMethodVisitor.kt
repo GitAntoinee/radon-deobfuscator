@@ -45,16 +45,17 @@ public class RadonBogusJumpInserterMethodVisitor(
     private var exitLabel: Label? = null
 
     override fun visitLabel(label: Label) {
-        // Set the state to IDLE when the label changes because the loading phase is only at the beginning of the method
-        // when there is no labels. And the instructions of a bogus jump are only in a label
-        // If the predicate variable is not found, then the deobfuscator cannot find bogus jump
-        state = if (predicateVariableIndex != null) State.IDLE else State.DISABLED
-
         // The exit label is the first label
         if (exitLabel == null) {
-            exitLabel = label
             state = State.REMOVING_EXIT_LABEL
+
+            exitLabel = label
         } else {
+            // Set the state to IDLE when the label changes because the loading phase is only at the beginning of the method
+            // when there is no labels. And the instructions of a bogus jump are only in a label
+            // If the predicate variable is not found, then the deobfuscator cannot find bogus jump
+            state = if (predicateVariableIndex != null) State.IDLE else State.DISABLED
+
             super.visitLabel(label)
         }
     }
@@ -90,6 +91,18 @@ public class RadonBogusJumpInserterMethodVisitor(
             state = State.IDLE
         } else {
             super.visitJumpInsn(opcode, label)
+        }
+    }
+
+    override fun visitLdcInsn(value: Any?) {
+        if (State.REMOVING_EXIT_LABEL != state) {
+            super.visitLdcInsn(value)
+        }
+    }
+
+    override fun visitInsn(opcode: Int) {
+        if (State.REMOVING_EXIT_LABEL != state) {
+            super.visitInsn(opcode)
         }
     }
 }
