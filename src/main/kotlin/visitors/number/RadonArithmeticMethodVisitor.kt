@@ -63,6 +63,7 @@ public class RadonArithmeticMethodVisitor(inner: MethodVisitor? = null) : Method
 
                     in Byte.MIN_VALUE..Byte.MAX_VALUE -> super.visitVarInsn(Opcodes.BIPUSH, sum)
                     in Short.MIN_VALUE..Short.MAX_VALUE -> super.visitVarInsn(Opcodes.SIPUSH, sum)
+                    else -> super.visitLdcInsn(sum)
                 }
 
                 sumOrNull = null
