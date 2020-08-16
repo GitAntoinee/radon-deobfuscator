@@ -13,6 +13,11 @@ public class RadonBogusJumpInserterMethodVisitor(
 ) : MethodVisitor(Opcodes.ASM9, inner) {
     private enum class State {
         /**
+         * The predicate local variable is not found
+         */
+        DISABLED,
+
+        /**
          * Find elements used in IDLE and REMOVING states
          */
         LOADING,
