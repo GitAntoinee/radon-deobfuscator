@@ -13,6 +13,20 @@ public class RadonGotoReplacerClassVisitor(inner: ClassVisitor? = null) : ClassV
 
     private val possiblePredicateFields: MutableList<String> = mutableListOf()
 
+    override fun visitField(
+        access: Int,
+        name: String,
+        descriptor: String,
+        signature: String?,
+        value: Any?,
+    ): FieldVisitor? {
+        if (access == PREDICATE_FIELD_ACCESS && descriptor == PREDICATE_FIELD_DESCRIPTOR) {
+            possiblePredicateFields.add(name)
+        }
+
+        return super.visitField(access, name, descriptor, signature, value)
+    }
+
     override fun visitMethod(
         access: Int,
         name: String?,
