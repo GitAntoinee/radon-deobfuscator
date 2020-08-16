@@ -24,4 +24,12 @@ public class RadonGotoReplacerMethodVisitor(
     override fun visitLabel(label: Label) {
         currentLabel = label
     }
+
+    override fun visitVarInsn(opcode: Int, `var`: Int) {
+        if (currentLabel == null && predicateVar == null && Opcodes.ISTORE == opcode) {
+            predicateVar = `var`
+        } else {
+            super.visitVarInsn(opcode, `var`)
+        }
+    }
 }
