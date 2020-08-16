@@ -27,6 +27,10 @@ public class RadonGotoReplacerMethodVisitor(
     override fun visitFieldInsn(opcode: Int, owner: String, name: String, descriptor: String) {
         check(state == State.IDLE) { "Field instruction visited while replacing a goto" }
 
+        if (Opcodes.GETSTATIC == opcode && owner == predicateField.first && name == predicateField.second && descriptor == predicateField.third) {
+            state = State.PATCHING
+        }
+
         super.visitFieldInsn(opcode, owner, name, descriptor)
     }
 }
