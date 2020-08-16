@@ -33,4 +33,12 @@ public class RadonArithmeticMethodVisitor(inner: MethodVisitor? = null) : Method
             else -> super.visitInsn(opcode)
         }
     }
+
+    override fun visitIntInsn(opcode: Int, operand: Int) {
+        if (Opcodes.BIPUSH == opcode || Opcodes.SIPUSH == opcode) {
+            pushInt(operand)
+        } else {
+            super.visitIntInsn(opcode, operand)
+        }
+    }
 }
