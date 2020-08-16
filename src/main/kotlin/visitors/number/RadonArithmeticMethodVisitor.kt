@@ -20,14 +20,9 @@ public class RadonArithmeticMethodVisitor(inner: MethodVisitor? = null) : Method
         }
 
     private fun pushInt(i: Int) {
-        when {
-            sumOrNull == null -> sum = i
-            operandOrNull == null -> operand = i
-            else -> {
-                // If no operator was present, the default operator is '-'
-                sum -= operand
-                operand = i
-            }
+        when (sumOrNull) {
+            null -> sum = i
+            else -> operand = i
         }
     }
 
@@ -70,8 +65,6 @@ public class RadonArithmeticMethodVisitor(inner: MethodVisitor? = null) : Method
                 super.visitInsn(opcode)
             }
         }
-
-        operandOrNull = null
     }
 
     override fun visitIntInsn(opcode: Int, operand: Int) {
