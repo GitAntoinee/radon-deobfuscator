@@ -49,7 +49,7 @@ public class RadonGotoReplacerClassVisitor(inner: ClassVisitor? = null) : ClassV
         descriptor: String?,
         signature: String?,
         exceptions: Array<out String>?,
-    ): MethodVisitor {
+    ): MethodVisitor? {
         val inner = super.visitMethod(access, name, descriptor, signature, exceptions)
 
         return predicateField?.let { RadonGotoReplacerMethodVisitor(it, inner) } ?: inner

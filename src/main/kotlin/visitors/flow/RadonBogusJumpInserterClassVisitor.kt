@@ -49,7 +49,7 @@ public class RadonBogusJumpInserterClassVisitor(inner: ClassVisitor? = null) : C
         descriptor: String,
         signature: String?,
         exceptions: Array<out String>?,
-    ): MethodVisitor {
+    ): MethodVisitor? {
         val inner = super.visitMethod(access, name, descriptor, signature, exceptions)
 
         val predicateField = possiblePredicateFields.firstOrNull()

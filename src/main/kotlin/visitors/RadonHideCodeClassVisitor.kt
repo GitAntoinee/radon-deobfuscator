@@ -29,7 +29,7 @@ public class RadonHideCodeClassVisitor(inner: ClassVisitor? = null) : ClassVisit
         descriptor: String?,
         signature: String?,
         value: Any?,
-    ): FieldVisitor {
+    ): FieldVisitor? {
         val newAccess = access and MODIFIED_ACCESS
 
         return super.visitField(newAccess, name, descriptor, signature, value)
@@ -41,7 +41,7 @@ public class RadonHideCodeClassVisitor(inner: ClassVisitor? = null) : ClassVisit
         descriptor: String,
         signature: String?,
         exceptions: Array<out String>?,
-    ): MethodVisitor {
+    ): MethodVisitor? {
         val newAccess = access and MODIFIED_ACCESS
 
         return super.visitMethod(newAccess, name, descriptor, signature, exceptions)
