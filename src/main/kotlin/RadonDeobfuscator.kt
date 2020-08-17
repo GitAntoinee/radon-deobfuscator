@@ -2,6 +2,7 @@ package com.github.gitantoinee.deobfuscator.radon
 
 import com.github.gitantoinee.deobfuscator.radon.visitors.RadonBadAnnotationClassVisitor
 import com.github.gitantoinee.deobfuscator.radon.visitors.RadonHideCodeClassVisitor
+import com.github.gitantoinee.deobfuscator.radon.visitors.RadonLocalVariableRenamerClassVisitor
 import com.github.gitantoinee.deobfuscator.radon.visitors.flow.RadonBogusJumpInserterClassVisitor
 import com.github.gitantoinee.deobfuscator.radon.visitors.flow.RadonGotoReplacerClassVisitor
 import com.github.gitantoinee.deobfuscator.radon.visitors.number.RadonArithmeticClassVisitor
@@ -21,7 +22,8 @@ public class RadonDeobfuscator {
                         RadonGotoReplacerClassVisitor(
                             RadonBadAnnotationClassVisitor(
                                 RadonArithmeticClassVisitor(
-                                    RadonInvokeDynamicClassVisitor(it)))))),
+                                    RadonLocalVariableRenamerClassVisitor(
+                                        RadonInvokeDynamicClassVisitor(it))))))),
                 0)
         }
         outputStream.write(writer.toByteArray())
