@@ -13,7 +13,8 @@ public class RadonLocalVariableRenamerClassVisitor(inner: ClassVisitor? = null) 
         exceptions: Array<out String>?,
     ): MethodVisitor {
         val inner = super.visitMethod(access, name, descriptor, signature, exceptions)
+        val isStatic = access or Opcodes.ACC_STATIC == 0
 
-        return RadonLocalVariableRenamerMethodVisitor(inner)
+        return RadonLocalVariableRenamerMethodVisitor(isStatic, inner)
     }
 }

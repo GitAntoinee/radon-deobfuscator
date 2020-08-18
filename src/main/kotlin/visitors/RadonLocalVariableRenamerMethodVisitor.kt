@@ -4,7 +4,13 @@ import org.objectweb.asm.Label
 import org.objectweb.asm.MethodVisitor
 import org.objectweb.asm.Opcodes
 
-public class RadonLocalVariableRenamerMethodVisitor(inner: MethodVisitor? = null) : MethodVisitor(Opcodes.ASM9, inner) {
+public class RadonLocalVariableRenamerMethodVisitor(
+    /**
+     * If the method is static
+     */
+    private val isStatic: Boolean,
+    inner: MethodVisitor? = null,
+) : MethodVisitor(Opcodes.ASM9, inner) {
     override fun visitLocalVariable(
         name: String,
         descriptor: String,
