@@ -52,10 +52,10 @@ public class RadonGotoReplacerMethodVisitor(
     override fun visitInsn(opcode: Int) {
         if (State.PATCHING_EXCEPTION == state) {
             check(Opcodes.ACONST_NULL == opcode) { "Patching exception but invalid opcode" }
-            state = state.nextState
+            nextState()
         } else if (State.PATCHING_THROW == state) {
             check(Opcodes.ATHROW == opcode) { "Patching throw but invalid opcode" }
-            state = state.nextState
+            nextState()
         } else {
             super.visitInsn(opcode)
         }
@@ -65,7 +65,7 @@ public class RadonGotoReplacerMethodVisitor(
         if (State.PATCHING_JUMP == state) {
             check(Opcodes.IFEQ == opcode) { "Invalid jump instruction while patching a replaced goto ($opcode)" }
             super.visitJumpInsn(Opcodes.GOTO, label)
-            state = state.nextState
+            nextState()
         } else {
             super.visitJumpInsn(opcode, label)
         }
@@ -75,9 +75,14 @@ public class RadonGotoReplacerMethodVisitor(
         check(state == State.IDLE) { "Field instruction visited while replacing a goto (state: $state)" }
 
         if (Opcodes.GETSTATIC == opcode && owner == predicateField.first && name == predicateField.second && descriptor == predicateField.third) {
-            state = state.nextState
+            nextState()
         } else {
             super.visitFieldInsn(opcode, owner, name, descriptor)
         }
+    }
+
+    @Suppress("NOTHING_TO_INLINE")
+    private inline fun nextState() {
+        state = state.nextState
     }
 }
