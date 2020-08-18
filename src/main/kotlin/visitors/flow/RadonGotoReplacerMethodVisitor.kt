@@ -50,14 +50,18 @@ public class RadonGotoReplacerMethodVisitor(
     private var state: State = State.IDLE
 
     override fun visitInsn(opcode: Int) {
-        if (State.PATCHING_EXCEPTION == state) {
-            check(Opcodes.ACONST_NULL == opcode) { "Patching exception but invalid opcode" }
-            nextState()
-        } else if (State.PATCHING_THROW == state) {
-            check(Opcodes.ATHROW == opcode) { "Patching throw but invalid opcode" }
-            nextState()
-        } else {
-            super.visitInsn(opcode)
+        when(state) {
+            State.PATCHING_EXCEPTION -> {
+                check(Opcodes.ACONST_NULL == opcode) { "Patching exception but invalid opcode" }
+                nextState()
+            }
+            State.PATCHING_THROW -> {
+                check(Opcodes.ATHROW == opcode) { "Patching throw but invalid opcode" }
+                nextState()
+            }
+            else -> {
+                super.visitInsn(opcode)
+            }
         }
     }
 
