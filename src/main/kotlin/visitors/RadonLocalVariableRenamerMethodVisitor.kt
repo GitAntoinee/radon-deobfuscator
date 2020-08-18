@@ -19,7 +19,7 @@ public class RadonLocalVariableRenamerMethodVisitor(
         end: Label?,
         index: Int,
     ) {
-        val newName = "var$index"
+        val newName = if (!isStatic && index == 0) "this" else "var$index"
 
         super.visitLocalVariable(newName, descriptor, signature, start, end, index)
     }
