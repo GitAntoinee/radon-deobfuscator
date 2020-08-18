@@ -28,6 +28,9 @@ public class RadonGotoReplacerMethodVisitor(
                 get() = PATCHING_EXCEPTION
         },
 
+        /**
+         * Removing an `ACONST_NULL` instruction
+         */
         PATCHING_EXCEPTION {
             override val nextState: State
                 get() = PATCHING_THROW
