@@ -6,6 +6,10 @@ import org.objectweb.asm.Opcodes
 
 public class RadonLocalVariableRenamerMethodVisitor(
     /**
+     * The descriptor of the current class
+     */
+    private val classDescriptor: String,
+    /**
      * If the method is static
      */
     private val isStatic: Boolean,

@@ -31,6 +31,6 @@ public class RadonLocalVariableRenamerClassVisitor(inner: ClassVisitor? = null) 
         val inner = super.visitMethod(access, name, descriptor, signature, exceptions)
         val isStatic = access or Opcodes.ACC_STATIC == 0
 
-        return RadonLocalVariableRenamerMethodVisitor(isStatic, inner)
+        return RadonLocalVariableRenamerMethodVisitor(classDescriptor, isStatic, inner)
     }
 }
