@@ -15,12 +15,20 @@ public class RadonGotoReplacerMethodVisitor(
         /**
          * Wait for a replaced goto
          */
-        IDLE,
+        IDLE {
+            override val nextState: State
+                get() = PATCHING
+        },
 
         /**
          * Replacing a goto
          */
-        PATCHING,
+        PATCHING {
+            override val nextState: State
+                get() = IDLE
+        };
+
+        abstract val nextState: State
     }
 
     private var state: State = State.IDLE
@@ -28,7 +36,7 @@ public class RadonGotoReplacerMethodVisitor(
     override fun visitInsn(opcode: Int) {
         if (State.PATCHING == state) {
             if (Opcodes.ACONST_NULL == opcode) Unit // The next instruction will be ATHROW
-            else if (Opcodes.ATHROW == opcode) state = State.IDLE // Patched
+            else if (Opcodes.ATHROW == opcode) state = state.nextState // Patched
         } else {
             super.visitInsn(opcode)
         }
@@ -47,7 +55,7 @@ public class RadonGotoReplacerMethodVisitor(
         check(state == State.IDLE) { "Field instruction visited while replacing a goto" }
 
         if (Opcodes.GETSTATIC == opcode && owner == predicateField.first && name == predicateField.second && descriptor == predicateField.third) {
-            state = State.PATCHING
+            state = state.nextState
         } else {
             super.visitFieldInsn(opcode, owner, name, descriptor)
         }
