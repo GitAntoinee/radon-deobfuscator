@@ -36,6 +36,9 @@ public class RadonGotoReplacerMethodVisitor(
                 get() = PATCHING_THROW
         },
 
+        /**
+         * Removing an `ATHROW` instruction
+         */
         PATCHING_THROW {
             override val nextState: State
                 get() = IDLE
