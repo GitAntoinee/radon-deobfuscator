@@ -50,7 +50,7 @@ public class RadonGotoReplacerMethodVisitor(
     private var state: State = State.IDLE
 
     override fun visitInsn(opcode: Int) {
-        when(state) {
+        when (state) {
             State.PATCHING_EXCEPTION -> {
                 check(Opcodes.ACONST_NULL == opcode) { "Patching exception but invalid opcode" }
                 nextState()
@@ -66,12 +66,15 @@ public class RadonGotoReplacerMethodVisitor(
     }
 
     override fun visitJumpInsn(opcode: Int, label: Label) {
-        if (State.PATCHING_JUMP == state) {
-            check(Opcodes.IFEQ == opcode) { "Invalid jump instruction while patching a replaced goto ($opcode)" }
-            super.visitJumpInsn(Opcodes.GOTO, label)
-            nextState()
-        } else {
-            super.visitJumpInsn(opcode, label)
+        when (state) {
+            State.PATCHING_JUMP -> {
+                check(Opcodes.IFEQ == opcode) { "Invalid jump instruction while patching a replaced goto ($opcode)" }
+                super.visitJumpInsn(Opcodes.GOTO, label)
+                nextState()
+            }
+            else -> {
+                super.visitJumpInsn(opcode, label)
+            }
         }
     }
 
