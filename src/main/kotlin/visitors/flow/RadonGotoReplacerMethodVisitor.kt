@@ -59,6 +59,7 @@ public class RadonGotoReplacerMethodVisitor(
         if (State.PATCHING_JUMP == state) {
             check(Opcodes.IFEQ == opcode) { "Invalid jump instruction while patching a replaced goto ($opcode)" }
             super.visitJumpInsn(Opcodes.GOTO, label)
+            state = state.nextState
         } else {
             super.visitJumpInsn(opcode, label)
         }
