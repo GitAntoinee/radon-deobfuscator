@@ -24,7 +24,8 @@ public class RadonLocalVariableRenamerMethodVisitor(
         index: Int,
     ) {
         val newName = if (!isStatic && index == 0) "this" else "var$index"
+        val newDescriptor = if (!isStatic && index == 0) classDescriptor else "var$index"
 
-        super.visitLocalVariable(newName, descriptor, signature, start, end, index)
+        super.visitLocalVariable(newName, newDescriptor, signature, start, end, index)
     }
 }
