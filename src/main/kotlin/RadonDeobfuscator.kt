@@ -7,12 +7,15 @@ import com.github.gitantoinee.deobfuscator.radon.visitors.flow.RadonBogusJumpIns
 import com.github.gitantoinee.deobfuscator.radon.visitors.flow.RadonGotoReplacerClassVisitor
 import com.github.gitantoinee.deobfuscator.radon.visitors.number.RadonArithmeticClassVisitor
 import com.github.gitantoinee.deobfuscator.radon.visitors.references.RadonInvokeDynamicClassVisitor
+import com.github.gitantoinee.deobfuscator.radon.visitors.references.RadonInvokeDynamicCleanupClassVisitor
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.ClassWriter
 import java.io.InputStream
 import java.io.OutputStream
 
 public class RadonDeobfuscator {
+    private val bootstrapMethods: MutableSet<String> = mutableSetOf()
+
     public fun deobfuscate(inputStream: InputStream, outputStream: OutputStream) {
         val reader = ClassReader(inputStream.readBytes())
         val writer = ClassWriter(reader, 0).also {
@@ -23,7 +26,8 @@ public class RadonDeobfuscator {
                             RadonBadAnnotationClassVisitor(
                                 RadonArithmeticClassVisitor(
                                     RadonLocalVariableRenamerClassVisitor(
-                                        RadonInvokeDynamicClassVisitor(it))))))),
+                                        RadonInvokeDynamicClassVisitor(bootstrapMethods,
+                                            RadonInvokeDynamicCleanupClassVisitor(bootstrapMethods, it)))))))),
                 0)
         }
         outputStream.write(writer.toByteArray())

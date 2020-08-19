@@ -5,7 +5,10 @@ import org.objectweb.asm.Handle
 import org.objectweb.asm.MethodVisitor
 import org.objectweb.asm.Opcodes
 
-public class RadonInvokeDynamicMethodVisitor(inner: MethodVisitor? = null) : MethodVisitor(Opcodes.ASM9, inner) {
+public class RadonInvokeDynamicMethodVisitor(
+    private val bootstrapMethods: MutableSet<String>,
+    inner: MethodVisitor? = null,
+) : MethodVisitor(Opcodes.ASM9, inner) {
     private companion object {
         /**
          * Number used to define a static method by radon
