@@ -1,11 +1,12 @@
 package com.github.gitantoinee.deobfuscator.radon.visitors.references
 
 import org.objectweb.asm.ClassVisitor
+import org.objectweb.asm.Handle
 import org.objectweb.asm.MethodVisitor
 import org.objectweb.asm.Opcodes
 
 public class RadonInvokeDynamicClassVisitor(
-    private val bootstrapMethods: MutableSet<String>,
+    private val bootstrapMethods: MutableSet<Handle>,
     inner: ClassVisitor? = null,
 ) : ClassVisitor(Opcodes.ASM9, inner) {
     override fun visitMethod(

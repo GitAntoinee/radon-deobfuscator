@@ -6,7 +6,7 @@ import org.objectweb.asm.MethodVisitor
 import org.objectweb.asm.Opcodes
 
 public class RadonInvokeDynamicMethodVisitor(
-    private val bootstrapMethods: MutableSet<String>,
+    private val bootstrapMethods: MutableSet<Handle>,
     inner: MethodVisitor? = null,
 ) : MethodVisitor(Opcodes.ASM9, inner) {
     private companion object {

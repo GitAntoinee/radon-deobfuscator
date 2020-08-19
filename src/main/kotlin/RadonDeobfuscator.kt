@@ -10,11 +10,12 @@ import com.github.gitantoinee.deobfuscator.radon.visitors.references.RadonInvoke
 import com.github.gitantoinee.deobfuscator.radon.visitors.references.RadonInvokeDynamicCleanupClassVisitor
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.ClassWriter
+import org.objectweb.asm.Handle
 import java.io.InputStream
 import java.io.OutputStream
 
 public class RadonDeobfuscator {
-    private val bootstrapMethods: MutableSet<String> = mutableSetOf()
+    private val bootstrapMethods: MutableSet<Handle> = mutableSetOf()
 
     public fun deobfuscate(inputStream: InputStream, outputStream: OutputStream) {
         val reader = ClassReader(inputStream.readBytes())
