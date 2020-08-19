@@ -46,7 +46,7 @@ public class RadonBogusJumpInserterMethodVisitor(
         state = if (predicateVariableIndex != null) State.IDLE else State.DISABLED
 
         // The exit label is the first label
-        if (exitLabel == null) {
+        if (State.IDLE == state && exitLabel == null) {
             exitLabel = label
         } else {
             super.visitLabel(label)
