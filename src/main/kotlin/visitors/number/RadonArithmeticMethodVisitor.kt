@@ -1,5 +1,6 @@
 package com.github.gitantoinee.deobfuscator.radon.visitors.number
 
+import org.objectweb.asm.Label
 import org.objectweb.asm.MethodVisitor
 import org.objectweb.asm.Opcodes
 
@@ -66,6 +67,15 @@ public class RadonArithmeticMethodVisitor(inner: MethodVisitor? = null) : Method
             is Number -> pushInt(value.toInt())
             else -> super.visitLdcInsn(value)
         }
+    }
+
+    override fun visitJumpInsn(opcode: Int, label: Label?) {
+        sumOrNull?.let {
+            visitSum(it)
+        }
+
+        sumOrNull = null
+        super.visitJumpInsn(opcode, label)
     }
 
     private fun visitSum(sum: Int) {
