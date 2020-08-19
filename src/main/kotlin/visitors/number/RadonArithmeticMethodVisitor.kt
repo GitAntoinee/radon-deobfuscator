@@ -45,7 +45,7 @@ public class RadonArithmeticMethodVisitor(inner: MethodVisitor? = null) : Method
             // Non-arithmetic opcode
             else -> {
                 sumOrNull?.let {
-                    visitSum(it)
+                    visitInt(it)
                 }
 
                 sumOrNull = null
@@ -71,14 +71,14 @@ public class RadonArithmeticMethodVisitor(inner: MethodVisitor? = null) : Method
 
     override fun visitJumpInsn(opcode: Int, label: Label?) {
         sumOrNull?.let {
-            visitSum(it)
+            visitInt(it)
         }
 
         sumOrNull = null
         super.visitJumpInsn(opcode, label)
     }
 
-    private fun visitSum(sum: Int) {
+    private fun visitInt(sum: Int) {
         when (sum) {
             -1 -> super.visitInsn(Opcodes.ICONST_M1)
             0 -> super.visitInsn(Opcodes.ICONST_0)
