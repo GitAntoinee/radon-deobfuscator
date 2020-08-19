@@ -18,7 +18,11 @@ public class RadonInvokeDynamicCleanupClassVisitor(
         descriptor: String?,
         signature: String?,
         exceptions: Array<out String>?,
-    ): MethodVisitor {
-        return super.visitMethod(access, name, descriptor, signature, exceptions)
+    ): MethodVisitor? {
+        return if (bootstrapMethods.all { it.name != name && it.desc != descriptor }) {
+            super.visitMethod(access, name, descriptor, signature, exceptions)
+        } else {
+            null
+        }
     }
 }
