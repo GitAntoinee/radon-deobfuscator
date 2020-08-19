@@ -43,20 +43,8 @@ public class RadonArithmeticMethodVisitor(inner: MethodVisitor? = null) : Method
 
             // Non-arithmetic opcode
             else -> {
-                when (sumOrNull) {
-                    null -> Unit // Just continue
-
-                    -1 -> super.visitInsn(Opcodes.ICONST_M1)
-                    0 -> super.visitInsn(Opcodes.ICONST_0)
-                    1 -> super.visitInsn(Opcodes.ICONST_1)
-                    2 -> super.visitInsn(Opcodes.ICONST_2)
-                    3 -> super.visitInsn(Opcodes.ICONST_3)
-                    4 -> super.visitInsn(Opcodes.ICONST_4)
-                    5 -> super.visitInsn(Opcodes.ICONST_5)
-
-                    in Byte.MIN_VALUE..Byte.MAX_VALUE -> super.visitVarInsn(Opcodes.BIPUSH, sum)
-                    in Short.MIN_VALUE..Short.MAX_VALUE -> super.visitVarInsn(Opcodes.SIPUSH, sum)
-                    else -> super.visitLdcInsn(sum)
+                sumOrNull?.let {
+                    visitSum(it)
                 }
 
                 sumOrNull = null
@@ -77,6 +65,22 @@ public class RadonArithmeticMethodVisitor(inner: MethodVisitor? = null) : Method
         when (value) {
             is Number -> pushInt(value.toInt())
             else -> super.visitLdcInsn(value)
+        }
+    }
+
+    private fun visitSum(sum: Int) {
+        when (sum) {
+            -1 -> super.visitInsn(Opcodes.ICONST_M1)
+            0 -> super.visitInsn(Opcodes.ICONST_0)
+            1 -> super.visitInsn(Opcodes.ICONST_1)
+            2 -> super.visitInsn(Opcodes.ICONST_2)
+            3 -> super.visitInsn(Opcodes.ICONST_3)
+            4 -> super.visitInsn(Opcodes.ICONST_4)
+            5 -> super.visitInsn(Opcodes.ICONST_5)
+
+            in Byte.MIN_VALUE..Byte.MAX_VALUE -> super.visitVarInsn(Opcodes.BIPUSH, sum)
+            in Short.MIN_VALUE..Short.MAX_VALUE -> super.visitVarInsn(Opcodes.SIPUSH, sum)
+            else -> super.visitLdcInsn(sum)
         }
     }
 }
