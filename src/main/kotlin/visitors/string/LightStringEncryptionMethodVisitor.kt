@@ -16,6 +16,30 @@ public class LightStringEncryptionMethodVisitor(
         const val DECRYPTION_METHOD_ACCESS: Int = Opcodes.ACC_PUBLIC and Opcodes.ACC_STATIC
     }
 
+    private enum class State {
+        /**
+         * Waiting for a `ldc` instruction with a number
+         */
+        LOADING_KEY,
+
+        /**
+         * Waiting for the `getstatic` instruction
+         */
+        LOADING_ENCRYPTED_STRING_FIELD,
+
+        /**
+         * Waiting for the index of the encrypted string
+         */
+        LOADING_ENCRYPTED_STRING_INDEX,
+
+        /**
+         * Waiting for the decryption method invocation and replacing it to a ldc instruction with the decrypted string
+         */
+        PATCHING,
+    }
+
+    private var state: State = State.LOADING_KEY
+
     private var currentKey: Long? = null
     private var currentEncryptedString: String? = null
 
