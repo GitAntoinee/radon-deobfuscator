@@ -25,10 +25,9 @@ public class RadonDeobfuscator {
                     RadonBogusJumpInserterClassVisitor(
                         RadonGotoReplacerClassVisitor(
                             RadonBadAnnotationClassVisitor(
-                                RadonArithmeticClassVisitor(
                                     RadonLocalVariableRenamerClassVisitor(
                                         RadonInvokeDynamicClassVisitor(bootstrapMethods,
-                                            RadonInvokeDynamicCleanupClassVisitor(bootstrapMethods, it)))))))),
+                                            RadonInvokeDynamicCleanupClassVisitor(bootstrapMethods, it))))))),
                 0)
         }
         outputStream.write(writer.toByteArray())
