@@ -44,12 +44,12 @@ public class LightStringEncryptionMethodVisitor(
     private var currentEncryptedString: String? = null
 
     override fun visitLdcInsn(value: Any?) {
+        check(state == State.LOADING_KEY) { "Unexpected ldc instruction" }
+
         if (currentKey == null && value is Number) {
-            check(state == State.LOADING_KEY) { "Unexpected ldc instruction" }
             currentKey = value.toLong()
             state = State.LOADING_ENCRYPTED_STRING_FIELD
         } else {
-            check(state == State.LOADING_KEY) { "Unexpected ldc instruction" }
             super.visitLdcInsn(value)
         }
     }
