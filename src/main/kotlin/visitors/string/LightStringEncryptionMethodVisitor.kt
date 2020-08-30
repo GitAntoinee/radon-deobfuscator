@@ -86,4 +86,14 @@ public class LightStringEncryptionMethodVisitor(
             super.visitLdcInsn(value)
         }
     }
+
+    override fun visitMethodInsn(opcode: Int, owner: String, name: String, descriptor: String, isInterface: Boolean) {
+        if (Opcodes.INVOKESTATIC == opcode && DECRYPTION_METHOD_DESCRIPTOR == descriptor && !isInterface && State.PATCHING == state) {
+            super.visitLdcInsn(decrypt(currentEncryptedString!!, owner, name, currentKey!!))
+            state = State.LOADING_KEY
+        } else {
+            check(State.LOADING_KEY == state) { "Unexpected method instruction" }
+            super.visitMethodInsn(opcode, owner, name, descriptor, isInterface)
+        }
+    }
 }
