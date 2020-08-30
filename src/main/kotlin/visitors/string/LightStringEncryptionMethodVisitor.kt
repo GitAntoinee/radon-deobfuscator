@@ -43,6 +43,17 @@ public class LightStringEncryptionMethodVisitor(
     private var currentKey: Long? = null
     private var currentEncryptedString: String? = null
 
+    override fun visitInsn(opcode: Int) {
+        if (Opcodes.ICONST_M1 <= opcode && Opcodes.ICONST_5 >= opcode && State.LOADING_ENCRYPTED_STRING_INDEX == state) {
+            val index = opcode - 3
+            currentEncryptedString = "** encrypted string at $index **" // TODO : Get the encrypted string
+            state = State.PATCHING
+        } else {
+            check(State.LOADING_KEY == state) { "Unexpected instruction" }
+            super.visitInsn(opcode)
+        }
+    }
+
     override fun visitFieldInsn(opcode: Int, owner: String, name: String, descriptor: String) {
         if (Opcodes.GETSTATIC == opcode && name in possibleEncryptedStringsFields) {
             check(state == State.LOADING_ENCRYPTED_STRING_FIELD) { "Unexpected field instruction" }
