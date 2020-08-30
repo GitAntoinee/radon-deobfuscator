@@ -18,4 +18,13 @@ public class LightStringEncryptionMethodVisitor(
 
     private var currentKey: Long? = null
     private var currentEncryptedString: String? = null
+
+    override fun visitLdcInsn(value: Any?) {
+        if (currentKey == null && value is Number) {
+            currentKey = value.toLong()
+        } else {
+            check(currentKey == null && currentEncryptedString == null) { "Unexpected ldc instruction" }
+            super.visitLdcInsn(value)
+        }
+    }
 }
