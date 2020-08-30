@@ -13,7 +13,6 @@ public class LightStringEncryptionMethodVisitor(
 ) : MethodVisitor(Opcodes.ASM9, inner) {
     private companion object {
         const val DECRYPTION_METHOD_DESCRIPTOR: String = "(Ljava/lang/Object;I)Ljava/lang/String;"
-        const val DECRYPTION_METHOD_ACCESS: Int = Opcodes.ACC_PUBLIC and Opcodes.ACC_STATIC
 
         private fun decrypt(encrypted: String, methodOwner: String, methodName: String, key: Long): String {
             val key2 = methodName.hashCode().toLong()
