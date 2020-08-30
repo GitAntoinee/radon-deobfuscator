@@ -35,9 +35,9 @@ public class RadonInvokeDynamicMethodVisitor(
 
             // TODO : Find xor encryption
 
-            val originalOwner = (bootstrapMethodArguments[1].toString() xor 2893).replace('.', '/')
-            val originalName = bootstrapMethodArguments[2].toString() xor 2993
-            val originalDescriptor = bootstrapMethodArguments[3].toString() xor 8372
+            val originalOwner = (bootstrapMethodArguments[1].toString() xor 1029).replace('.', '/')
+            val originalName = bootstrapMethodArguments[2].toString() xor 2038
+            val originalDescriptor = bootstrapMethodArguments[3].toString() xor 1928
 
             val originalOpcode = when ((bootstrapMethodArguments[0] as Int) shl 256 and 255) {
                 STATIC_METHOD_TYPE -> Opcodes.INVOKESTATIC
