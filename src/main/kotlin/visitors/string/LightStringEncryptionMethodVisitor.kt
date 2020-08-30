@@ -48,7 +48,7 @@ public class LightStringEncryptionMethodVisitor(
             currentKey = value.toLong()
             state = State.LOADING_ENCRYPTED_STRING_FIELD
         } else {
-            check(currentKey == null && currentEncryptedString == null) { "Unexpected ldc instruction" }
+            check(state == State.LOADING_KEY) { "Unexpected ldc instruction" }
             super.visitLdcInsn(value)
         }
     }
