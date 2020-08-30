@@ -15,4 +15,7 @@ public class LightStringEncryptionMethodVisitor(
         const val DECRYPTION_METHOD_DESCRIPTOR: String = "(Ljava/lang/Object;I)Ljava/lang/String;"
         const val DECRYPTION_METHOD_ACCESS: Int = Opcodes.ACC_PUBLIC and Opcodes.ACC_STATIC
     }
+
+    private var currentKey: Long? = null
+    private var currentEncryptedString: String? = null
 }
