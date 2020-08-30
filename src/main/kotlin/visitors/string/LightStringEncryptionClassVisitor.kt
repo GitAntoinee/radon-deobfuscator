@@ -21,9 +21,9 @@ public class LightStringEncryptionClassVisitor(inner: ClassVisitor? = null) : Cl
         return super.visitField(access, name, descriptor, signature, value)
     }
 
-    override fun visitMethod(access: Int, name: String?, descriptor: String?, signature: String?, exceptions: Array<out String>?): MethodVisitor {
+    override fun visitMethod(access: Int, name: String?, descriptor: String?, signature: String?, exceptions: Array<out String>?): MethodVisitor? {
         val inner = super.visitMethod(access, name, descriptor, signature, exceptions)
 
-        return LightStringEncryptionMethodVisitor(inner)
+        return if(possibleEncryptedStringsFields.isNotEmpty()) LightStringEncryptionMethodVisitor(inner) else inner
     }
 }
