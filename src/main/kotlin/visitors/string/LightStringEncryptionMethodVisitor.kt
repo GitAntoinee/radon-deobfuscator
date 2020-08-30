@@ -46,6 +46,7 @@ public class LightStringEncryptionMethodVisitor(
     override fun visitLdcInsn(value: Any?) {
         if (currentKey == null && value is Number) {
             currentKey = value.toLong()
+            state = State.LOADING_ENCRYPTED_STRING_FIELD
         } else {
             check(currentKey == null && currentEncryptedString == null) { "Unexpected ldc instruction" }
             super.visitLdcInsn(value)
