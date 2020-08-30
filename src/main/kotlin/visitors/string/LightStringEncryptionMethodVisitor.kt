@@ -43,6 +43,16 @@ public class LightStringEncryptionMethodVisitor(
     private var currentKey: Long? = null
     private var currentEncryptedString: String? = null
 
+    override fun visitFieldInsn(opcode: Int, owner: String, name: String, descriptor: String) {
+        if (Opcodes.GETSTATIC == opcode && name in possibleEncryptedStringsFields) {
+            check(state == State.LOADING_ENCRYPTED_STRING_FIELD) { "Unexpected field instruction" }
+            state = State.LOADING_ENCRYPTED_STRING_INDEX
+        } else {
+            check(state == State.LOADING_KEY) { "Unexpected field instruction" }
+            super.visitFieldInsn(opcode, owner, name, descriptor)
+        }
+    }
+
     override fun visitLdcInsn(value: Any?) {
         check(state == State.LOADING_KEY) { "Unexpected ldc instruction" }
 
