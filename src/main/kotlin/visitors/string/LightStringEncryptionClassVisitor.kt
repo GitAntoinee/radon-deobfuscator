@@ -25,6 +25,9 @@ public class LightStringEncryptionClassVisitor(inner: ClassVisitor? = null) : Cl
     override fun visitMethod(access: Int, name: String?, descriptor: String?, signature: String?, exceptions: Array<out String>?): MethodVisitor? {
         val inner = super.visitMethod(access, name, descriptor, signature, exceptions)
 
-        return if (possibleEncryptedStringsFields.isNotEmpty()) LightStringEncryptionMethodVisitor(possibleEncryptedStringsFields, inner) else inner
+        return EncryptedFieldReaderMethodVisitor(if (possibleEncryptedStringsFields.isNotEmpty()) LightStringEncryptionMethodVisitor(possibleEncryptedStringsFields, inner) else inner)
+    }
+
+    private inner class EncryptedFieldReaderMethodVisitor(inner: MethodVisitor? = null) : MethodVisitor(Opcodes.ASM9, inner) {
     }
 }
