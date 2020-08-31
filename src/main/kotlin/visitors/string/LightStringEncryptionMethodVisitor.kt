@@ -7,7 +7,7 @@ public class LightStringEncryptionMethodVisitor(
         /**
          * The fields who may contains the encrypted strings
          */
-        private val possibleEncryptedStringsFields: List<String>,
+        private val possibleEncryptedStringsFields: Map<String, List<String>>,
 
         inner: MethodVisitor? = null
 ) : MethodVisitor(Opcodes.ASM9, inner) {

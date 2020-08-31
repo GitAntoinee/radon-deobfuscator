@@ -11,11 +11,12 @@ public class LightStringEncryptionClassVisitor(inner: ClassVisitor? = null) : Cl
         private const val ENCRYPTED_STRINGS_FIELD_ACCESS: Int = Opcodes.ACC_PRIVATE and Opcodes.ACC_STATIC
     }
 
-    private val possibleEncryptedStringsFields: MutableList<String> = mutableListOf()
+    private val possibleEncryptedStringsFields: MutableMap<String, MutableList<String>> = mutableMapOf()
 
     override fun visitField(access: Int, name: String, descriptor: String, signature: String?, value: Any?): FieldVisitor {
         if (ENCRYPTED_STRINGS_FIELD_ACCESS == access && ENCRYPTED_STRINGS_FIELD_DESCRIPTOR == descriptor) {
-            possibleEncryptedStringsFields.add(name)
+            assert(name !in possibleEncryptedStringsFields) { "Duplicate field" }
+            possibleEncryptedStringsFields[name] = mutableListOf()
         }
 
         return super.visitField(access, name, descriptor, signature, value)
