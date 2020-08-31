@@ -25,23 +25,6 @@ public class LightStringEncryptionClassVisitor(inner: ClassVisitor? = null) : Cl
     override fun visitMethod(access: Int, name: String?, descriptor: String?, signature: String?, exceptions: Array<out String>?): MethodVisitor? {
         val inner = super.visitMethod(access, name, descriptor, signature, exceptions)
 
-        return EncryptedFieldReaderMethodVisitor(if (possibleEncryptedStringsFields.isNotEmpty()) LightStringEncryptionMethodVisitor(possibleEncryptedStringsFields, inner) else inner)
-    }
-
-    private inner class EncryptedFieldReaderMethodVisitor(inner: MethodVisitor? = null) : MethodVisitor(Opcodes.ASM9, inner) {
-        private lateinit var fieldName: String
-        private var expectedSize: Int? = null
-        private val content: MutableList<String> = mutableListOf()
-
-        override fun visitEnd() {
-            if (::fieldName.isInitialized) {
-                check(fieldName in possibleEncryptedStringsFields) { "Undefined field" }
-                check(possibleEncryptedStringsFields.getValue(fieldName).isEmpty()) { "Duplicate initialization function" }
-                check(expectedSize != null && possibleEncryptedStringsFields.size == expectedSize) { "Invalid size" }
-                possibleEncryptedStringsFields[fieldName] = content
-            }
-
-            super.visitEnd()
-        }
+        return if (possibleEncryptedStringsFields.isNotEmpty()) LightStringEncryptionMethodVisitor(possibleEncryptedStringsFields, inner) else inner
     }
 }
