@@ -5,7 +5,6 @@ import com.github.gitantoinee.deobfuscator.radon.visitors.RadonHideCodeClassVisi
 import com.github.gitantoinee.deobfuscator.radon.visitors.RadonLocalVariableRenamerClassVisitor
 import com.github.gitantoinee.deobfuscator.radon.visitors.flow.RadonBogusJumpInserterClassVisitor
 import com.github.gitantoinee.deobfuscator.radon.visitors.flow.RadonGotoReplacerClassVisitor
-import com.github.gitantoinee.deobfuscator.radon.visitors.number.RadonArithmeticClassVisitor
 import com.github.gitantoinee.deobfuscator.radon.visitors.references.RadonInvokeDynamicClassVisitor
 import com.github.gitantoinee.deobfuscator.radon.visitors.references.RadonInvokeDynamicCleanupClassVisitor
 import org.objectweb.asm.ClassReader
