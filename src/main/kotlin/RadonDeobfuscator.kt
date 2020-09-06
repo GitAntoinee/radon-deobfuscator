@@ -20,8 +20,13 @@ public class RadonDeobfuscator {
             reader.accept(
                 RadonHideCodeClassVisitor(
                     RadonBogusJumpInserterClassVisitor(
-                        RadonGotoReplacerClassVisitor(it))),
-                0)
+                        RadonGotoReplacerClassVisitor(
+                            it
+                        )
+                    )
+                ),
+                0
+            )
         }
 
         val writer = ClassWriter(reader, 0).also {
@@ -30,9 +35,17 @@ public class RadonDeobfuscator {
                     RadonBogusJumpInserterClassVisitor(
                         RadonGotoReplacerClassVisitor(
                             RadonBadAnnotationClassVisitor(
-                                    RadonLocalVariableRenamerClassVisitor(
-                                        RadonInvokeDynamicClassVisitor(it)))))),
-                0)
+                                RadonLocalVariableRenamerClassVisitor(
+                                    RadonInvokeDynamicClassVisitor(
+                                        it
+                                    )
+                                )
+                            )
+                        )
+                    )
+                ),
+                0
+            )
         }
 
         outputStream.write(writer.toByteArray())
