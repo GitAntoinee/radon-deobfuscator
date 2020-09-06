@@ -6,7 +6,6 @@ import org.objectweb.asm.MethodVisitor
 import org.objectweb.asm.Opcodes
 
 public class RadonInvokeDynamicMethodVisitor(
-    private val bootstrapMethods: MutableSet<Handle>,
     inner: MethodVisitor? = null,
 ) : MethodVisitor(Opcodes.ASM9, inner) {
     private companion object {
@@ -31,8 +30,6 @@ public class RadonInvokeDynamicMethodVisitor(
                 && bootstrapMethodArguments.drop(1).all { it is String }
 
         if (isObfuscated) {
-            bootstrapMethods.add(bootstrapMethodHandle)
-
             // TODO : Find xor encryption
 
             val originalOwner = (bootstrapMethodArguments[1].toString() xor 1029).replace('.', '/')

@@ -6,7 +6,6 @@ import org.objectweb.asm.MethodVisitor
 import org.objectweb.asm.Opcodes
 
 public class RadonInvokeDynamicClassVisitor(
-    private val bootstrapMethods: MutableSet<Handle>,
     inner: ClassVisitor? = null,
 ) : ClassVisitor(Opcodes.ASM9, inner) {
     override fun visitMethod(
@@ -18,6 +17,6 @@ public class RadonInvokeDynamicClassVisitor(
     ): MethodVisitor? {
         val inner = super.visitMethod(access, name, descriptor, signature, exceptions)
 
-        return RadonInvokeDynamicMethodVisitor(bootstrapMethods, inner)
+        return RadonInvokeDynamicMethodVisitor(inner)
     }
 }
