@@ -10,6 +10,7 @@ import com.github.gitantoinee.deobfuscator.radon.visitors.references.RadonInvoke
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.ClassWriter
 import org.objectweb.asm.Handle
+import org.objectweb.asm.tree.ClassNode
 import java.io.InputStream
 import java.io.OutputStream
 
@@ -18,6 +19,15 @@ public class RadonDeobfuscator {
 
     public fun deobfuscate(inputStream: InputStream, outputStream: OutputStream) {
         val reader = ClassReader(inputStream.readBytes())
+
+        val classNode = ClassNode().also {
+            reader.accept(
+                RadonHideCodeClassVisitor(
+                    RadonBogusJumpInserterClassVisitor(
+                        RadonGotoReplacerClassVisitor(it))),
+                0)
+        }
+
         val writer = ClassWriter(reader, 0).also {
             reader.accept(
                 RadonHideCodeClassVisitor(
@@ -29,6 +39,7 @@ public class RadonDeobfuscator {
                                             RadonInvokeDynamicCleanupClassVisitor(bootstrapMethods, it))))))),
                 0)
         }
+
         outputStream.write(writer.toByteArray())
     }
 }
